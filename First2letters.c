@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-int main()
-{
+
+void cuentaPalabras(){
 	FILE *archivo;
 	char caracter;
 	int fElement =0;
-	
 	archivo = fopen("archivo.txt","r");
 	
 	if (archivo == NULL)
@@ -35,4 +35,11 @@ int main()
         }
         fclose(archivo);
 	return 0;
+}
+
+int main()
+{
+	
+	
+	cuentaPalabras();
 }
