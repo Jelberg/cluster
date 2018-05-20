@@ -10,7 +10,7 @@
 #define countWord "palabras_contabilizadas.txt"
 
 // Direccion de diccionario de palabras 
-#define diccionario "Palabras_Grupo02.txt"
+#define diccionario "palabras_libro_medicina.txt"
 
 		/****************************************************
 
@@ -30,7 +30,7 @@ char *strlwr(char *str);
 void obtinePalabraDiccionario();		
 		
 //Metodo compara la palabra a buscar con la oracion que se le manda
-int loencontre(int pos, int tp, char texto[300], char palabra[]);
+int loencontre(int pos, int tp, char texto[500], char palabra[]);
 
 //Metodo para crear un archivo con las palabras contabilizadas 
 void creaArchivoCantPalabras(char palabra[], int cantidad);
@@ -41,6 +41,19 @@ void cuentaPalabras(char palabra[]);
  
  //------------------------------------------------------------------
  
+//---------------METODOS PARA DIVIDIR PALABRAS DEL DICCIONARIO PARA NODOS---------
+
+//devuelve un int con la cantidad de palabras del diccionario
+int cantPalabras();
+
+// Metodo para crear archivos para diicionario particular tantos archivos como nodos haya para la reparticion de las palabras
+void archivoPalabrasXnodo(int cantNodos);
+
+//crea archivo con nombre de nodo y carga con palabras particulares
+void creaArchivoDiccionarioNombre(int nodo, char texto[500]);
+
+//-------------------------------------------------------------------------------- 
+ 
 		/*******************************************
 
 							MAIN
@@ -49,7 +62,8 @@ void cuentaPalabras(char palabra[]);
  
 void main(){
  	//obtineDefinicionDiccionario();
-	obtinePalabraDiccionario();
+	//obtinePalabraDiccionario();
+    archivoPalabrasXnodo(6);
 }
 
 		/*******************************************
@@ -69,7 +83,7 @@ char *strlwr(char *str){
   return str;
 }		
 		
-int loencontre(int pos, int tp, char texto[300], char palabra[]) {
+int loencontre(int pos, int tp, char texto[500], char palabra[]) {
   char aux[20];
   char auxword[]={0};
   int auxtam= pos+tp;
@@ -81,8 +95,6 @@ int loencontre(int pos, int tp, char texto[300], char palabra[]) {
 
   }
   aux[tp]='\0';
- //AUX ES LA PALABRA SACADA DE LA FILA 
- //LO QUE SE PUEDE HACER ES 
   if ( strcmp(aux,palabra) ==0 )
       return 1;
   else
@@ -113,7 +125,7 @@ void creaArchivoCantPalabras(char palabra[], int cantidad){
 
 void cuentaPalabras(char palabra[]){
 	FILE *archivo;	
- 	char texto[300];
+ 	char texto[500];
 	int tp, tam;
 	int contador=0;
  	
@@ -126,7 +138,7 @@ void cuentaPalabras(char palabra[]){
  	    while (feof(archivo) == 0){
 			
 			// fila se copia en texto
-			fgets(texto,300,archivo);
+			fgets(texto,500,archivo);
 			
 			tp=strlen(palabra);
             tam=strlen(texto);
@@ -151,7 +163,7 @@ void cuentaPalabras(char palabra[]){
 void obtinePalabraDiccionario(){
 	FILE *archivo;
 	char *caracter[20]={0};
-	char definicion[300]={0};
+	char definicion[500]={0};
 	
 	archivo = fopen(diccionario,"r");
 	
@@ -167,18 +179,93 @@ void obtinePalabraDiccionario(){
 				//Obtiene palabra
 			    fscanf(archivo,"%s",&caracter);
 				// Obtiene definicion 
-				fgets(definicion,300,archivo);
-				
-				printf("%s\n",definicion);
+				fgets(definicion,500,archivo);
 			    
 				cuentaPalabras(strlwr(caracter));
+				//libera el espacio de memoria reservado de memoria
+				free(caracter);
 	    	}
         }   
 	fclose(archivo);	
 }
 
-void obtineDefinicionDiccionario(char caracter, char definicion[300]){
+void obtineDefinicionDiccionario(char caracter, char definicion[500]){
 		
+}
+
+int cantPalabras(){
+	FILE *archivo;
+	char definicion[500]={0};
+	int cont = 0;
+	
+	archivo = fopen(diccionario,"r");
+	
+	if (archivo == NULL){
+            printf("\nError de apertura del archivo. \n\n");
+        }
+        else{  
+            while(feof(archivo) == 0)
+	    	{		
+				// Obtiene definicion 
+				fgets(definicion,500,archivo);
+				cont++;
+	    	}
+        }   
+	fclose(archivo);
+	return cont;	
+}
+
+void creaArchivoDiccionarioNombre(int nodo, char texto[500]){
+	FILE *archivo;
+	char numNodo[2] = {0};
+	char* nombreArchNodo = malloc(35);
+	
+	sprintf(numNodo,"%d",nodo);
+	
+	strcpy(nombreArchNodo,"diccionario_palabras_nodo_");
+	strcat(nombreArchNodo,numNodo);
+	strcat(nombreArchNodo,".txt");
+
+	archivo = fopen(nombreArchNodo,"a+");
+	
+	fputs(texto,archivo);
+	
+	free(nombreArchNodo);
+	
+	fclose(archivo);
+}
+
+
+void archivoPalabrasXnodo(int cantNodos){
+	FILE *archivo;
+	char definicion[500]={0};
+	int totalPalabras = cantPalabras();
+	int cantidadParticular = totalPalabras/cantNodos + 1;
+	int sumPalabras =0;
+	int nodoActual =1;
+	
+	archivo = fopen(diccionario,"r");
+	
+	if (archivo == NULL){
+            printf("\nError de apertura del archivo. \n\n");
+        }
+        else{  
+            while(feof(archivo) == 0)
+	    	{		
+				// Obtiene toda la fila 
+				fgets(definicion,500,archivo);
+				if (sumPalabras < cantidadParticular){
+					creaArchivoDiccionarioNombre(nodoActual,definicion);
+					sumPalabras++;
+				}
+				else {
+					sumPalabras =0;
+					nodoActual++;
+				}
+				
+	    	}
+        }   
+	fclose(archivo);
 }
 
  
