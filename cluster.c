@@ -3,6 +3,12 @@
 #include <string.h>
 #include <ctype.h>
 
+// Direccion del libro 
+#define libroTXT "archivo.txt"
+
+// Direccion archivo generado con cuentas de palabras
+#define countWord "palabras_contabilizadas.txt"
+
 		/****************************************************
 
 			LISTA DE FUNCIONES Y PROCEDIMIENTOS COMENTADAS
@@ -36,7 +42,7 @@ void main(){
 		*******************************************/
 
 int loencontre(int pos, int tp, char texto[100], char palabra[]) {
-  char aux[20] ={0};
+  char aux[20] ;
   char anterior='a';
   int auxtam= pos+tp;
   int i, xi;
@@ -58,12 +64,21 @@ int loencontre(int pos, int tp, char texto[100], char palabra[]) {
 
 void creaArchivoCantPalabras(char palabra[], int cantidad){
 	FILE *fp;
-	char dest[]={0};
-    
-	stpcpy(dest,palabra);
-	//strcat(palabra," 20");
- 	fp = fopen ( "palabras_contabilizadas.txt", "w+" );
- 	
+	//Tamanio de la palabra por que es necesario para en strcpy y strcat
+	int tamanio  = strlen(palabra);
+	char dest[tamanio+7];
+	
+	char scantidad[5];
+	//Transforma un int en un char y lo copia en la variable scantidad 
+	sprintf(scantidad,"%d",cantidad);
+	
+	strcpy(dest,palabra);
+	strcat(dest," ");
+	strcat(dest,scantidad);
+	strcat(dest,"\n");
+	
+ 	fp = fopen ( countWord , "a+" );
+	
  	fputs(dest,fp);
  	
  	fclose ( fp );
@@ -72,11 +87,11 @@ void creaArchivoCantPalabras(char palabra[], int cantidad){
  
 void cuentaPalabras(char palabra[]){
 	FILE *archivo;	
- 	char texto[100]={0};
+ 	char texto[100];
 	int tp, tam;
 	int contador=0;
  	
- 	archivo = fopen("archivo.txt","r");
+ 	archivo = fopen(libroTXT,"r");
  	
  	if (archivo == NULL)
  		exit(1);
@@ -84,8 +99,8 @@ void cuentaPalabras(char palabra[]){
  	 
  	    while (feof(archivo) == 0){
 			
+			// fila se copia en texto
 			fgets(texto,100,archivo);
-			printf("%s",texto);
 			
 			tp=strlen(palabra);
             tam=strlen(texto);
@@ -99,9 +114,13 @@ void cuentaPalabras(char palabra[]){
 	            }
 			}
  	    }
-        printf("\n Se encontro la palabra %i veces \n\n", contador);  
+        printf("\n Se encontro la palabra %i veces \n\n", contador); 
+		
+		fclose(archivo);	
+		
 		creaArchivoCantPalabras(palabra,contador);
+			 
     }
-    fclose(archivo);
+    
 }
  
