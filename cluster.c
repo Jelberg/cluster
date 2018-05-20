@@ -4,7 +4,7 @@
 #include <ctype.h>
 
 // Direccion del libro 
-#define libroTXT "archivo.txt"
+#define libroTXT "libro_medicina.txt"
 
 // Direccion archivo generado con cuentas de palabras
 #define countWord "palabras_contabilizadas.txt"
@@ -25,7 +25,7 @@ char *strlwr(char *str);
 //-------------------------------------------		
 
 //------METODOS PARA GENERAR ARCHIVOS DEPALABRAS CONTADAS------------
-//Metodo para obtener la palabra el diccionario 
+//Metodo para obtener la palabra el diccionario y llama metodo cuenta palabras para contabilizar de una vez
 void obtinePalabraDiccionario();		
 		
 //Metodo compara la palabra a buscar con la oracion que se le manda
@@ -47,7 +47,7 @@ void cuentaPalabras(char palabra[]);
 		*******************************************/
  
 void main(){
- 	cuentaPalabras("hoLa");
+ 	
 	obtinePalabraDiccionario();
 }
 
@@ -56,7 +56,6 @@ void main(){
 			        FUNCIONES Y PROCEDIMIENTOS
 
 		*******************************************/
-
 		
 char *strlwr(char *str)
 {
@@ -149,6 +148,8 @@ void cuentaPalabras(char palabra[]){
     
 }
 
+
+
 void obtinePalabraDiccionario(){
 	FILE *archivo;
 	char *caracter[20]={0};
@@ -171,8 +172,10 @@ void obtinePalabraDiccionario(){
 				// Necesario para poderer mover el apuntador al final de la fila
 				fgets(word,300,archivo);
 				
-			
-				printf("%s\n", strlwr(caracter));
+			    cuentaPalabras(strlwr(caracter));
+				
+				
+				//printf("%s\n", strlwr(caracter));
 			
 	    	}
         }   
