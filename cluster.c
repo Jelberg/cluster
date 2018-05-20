@@ -30,6 +30,10 @@ char *strlwr(char *str);
 void obtinePalabraDiccionario();		
 		
 //Metodo compara la palabra a buscar con la oracion que se le manda
+// pos = es la posicion de la oracion de la fila 
+// tp = tamao de la palabra que estoy buscando
+// texto = fila del libro en el que  se busca lapalabra que no tendra mas de 500 caracteres
+// palabra = es la palabra a buscar 
 int loencontre(int pos, int tp, char texto[500], char palabra[]);
 
 //Metodo para crear un archivo con las palabras contabilizadas 
@@ -42,7 +46,7 @@ void cuentaPalabras(char palabra[]);
  
  //------------------------------------------------------------------
  
-//---------------METODOS PARA DIVIDIR PALABRAS DEL DICCIONARIO PARA LOS NODOS---------
+//---------------METODOS PARA DIVIDIR PALABRAS DEL DICCIONARIO PARA LOS NODOS---------USO PARA EL COORDINADOR------
 
 //devuelve un int con la cantidad de palabras del diccionario
 int cantPalabras();
