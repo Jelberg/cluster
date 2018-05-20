@@ -9,14 +9,27 @@
 // Direccion archivo generado con cuentas de palabras
 #define countWord "palabras_contabilizadas.txt"
 
+// Direccion de diccionario de palabras 
+#define diccionario "Palabras_Grupo02.txt"
+
 		/****************************************************
 
 			LISTA DE FUNCIONES Y PROCEDIMIENTOS COMENTADAS
 
 		*****************************************************/
 
+//--------------METODOS GLOBALES--------------
+//Metodo ara convertir cadena de caracteres de mayusculas a minusculas
+char *strlwr(char *str);
+
+//-------------------------------------------		
+
+//------METODOS PARA GENERAR ARCHIVOS DEPALABRAS CONTADAS------------
+//Metodo para obtener la palabra el diccionario 
+void obtinePalabraDiccionario();		
+		
 //Metodo compara la palabra a buscar con la oracion que se le manda
-int loencontre(int pos, int tp, char texto[100], char palabra[]);
+int loencontre(int pos, int tp, char texto[300], char palabra[]);
 
 //Metodo para crear un archivo con las palabras contabilizadas 
 void creaArchivoCantPalabras(char palabra[], int cantidad);
@@ -25,6 +38,8 @@ void creaArchivoCantPalabras(char palabra[], int cantidad);
 // Este metodo procesa solo 1 palabra
 void cuentaPalabras(char palabra[]);
  
+ //------------------------------------------------------------------
+ 
 		/*******************************************
 
 							MAIN
@@ -32,7 +47,8 @@ void cuentaPalabras(char palabra[]);
 		*******************************************/
  
 void main(){
- 	cuentaPalabras("hola");
+ 	cuentaPalabras("hoLa");
+	obtinePalabraDiccionario();
 }
 
 		/*******************************************
@@ -41,23 +57,34 @@ void main(){
 
 		*******************************************/
 
-int loencontre(int pos, int tp, char texto[100], char palabra[]) {
-  char aux[20] ;
-  char anterior='a';
+		
+char *strlwr(char *str)
+{
+  unsigned char *p = (unsigned char *)str;
+
+  while (*p) {
+     *p = tolower((unsigned char)*p);
+      p++;
+  }
+
+  return str;
+}		
+		
+int loencontre(int pos, int tp, char texto[300], char palabra[]) {
+  char aux[20];
+  char auxword[]={0};
   int auxtam= pos+tp;
-  int i, xi;
+  int i, xi,j;
  
   // aux en la palabra que saca de la oracion de texto en base al tamanio de la palabra buscada 
   for ( i= pos, xi=0; i<= auxtam  ; i++,xi++){
     aux[xi]=tolower(texto[i]);
+
   }
- 
   aux[tp]='\0';
-  
-  // Hace la comparacion 
+ 
   if ( strcmp(aux,palabra) ==0 )
       return 1;
- 
   else
       return 0;
 }
@@ -87,7 +114,7 @@ void creaArchivoCantPalabras(char palabra[], int cantidad){
  
 void cuentaPalabras(char palabra[]){
 	FILE *archivo;	
- 	char texto[100];
+ 	char texto[300];
 	int tp, tam;
 	int contador=0;
  	
@@ -100,7 +127,7 @@ void cuentaPalabras(char palabra[]){
  	    while (feof(archivo) == 0){
 			
 			// fila se copia en texto
-			fgets(texto,100,archivo);
+			fgets(texto,300,archivo);
 			
 			tp=strlen(palabra);
             tam=strlen(texto);
@@ -120,5 +147,35 @@ void cuentaPalabras(char palabra[]){
 			 
     }
     
+}
+
+void obtinePalabraDiccionario(){
+	FILE *archivo;
+	char *caracter[20]={0};
+	char word[300]={0};
+	int fElement =0;
+	
+	archivo = fopen(diccionario,"r");
+	
+	if (archivo == NULL)
+        {
+            printf("\nError de apertura del archivo. \n\n");
+        }
+        else
+        {
+            
+            while(feof(archivo) == 0)
+	    	{		
+				//Toma la primera palabra 
+			    fscanf(archivo,"%s",&caracter);
+				// Necesario para poderer mover el apuntador al final de la fila
+				fgets(word,300,archivo);
+				
+			
+				printf("%s\n", strlwr(caracter));
+			
+	    	}
+        }   
+	fclose(archivo);	
 }
  
