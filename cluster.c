@@ -18,12 +18,18 @@
 
 		*****************************************************/
 
-//--------------METODOS GLOBALES--------------
+//--------------METODOS COMUNES--------------
 //Metodo ara convertir cadena de caracteres de mayusculas a minusculas
 char *strlwr(char *str);
 
 //Elimina ficheros con la direccion dada
 void eliminaFichero(char dirArchivo[100]);
+
+//Metodo para renombrar ficheros
+void remonbraFichero(char nombreViejo[100], char nombreNuevo[100]);
+
+// Devuelve nombre de archivo para el diccionario particular de los nodos 
+char* nombreArchivoNodo(int nodo);
 
 //-------------------------------------------		
 
@@ -71,7 +77,9 @@ void creaArchivoDiccionarioNombre(int nodo, char texto[500]);
 void main(){
  	//obtineDefinicionDiccionario();
 	//obtinePalabraDiccionario();
-    archivoPalabrasXnodo(6);
+    //archivoPalabrasXnodo(6);
+	//eliminaFichero(nombreArchivoNodo(3));
+	remonbraFichero(nombreArchivoNodo(2), "HOLABB.txt");
 }
 
 		/*******************************************
@@ -291,10 +299,15 @@ void archivoPalabrasXnodo(int cantNodos){
 
 void eliminaFichero(char dirArchivo[100]){
 	
-	if(remove(dirArchivo)==0) // Eliminamos el archivo
-        printf("El archivo fue eliminado satisfactoriamente\n");
-    else
-        printf("No se pudo eliminar el archivo\n");
+	if(remove(dirArchivo)!=0) // Eliminamos el archivo
+	printf("No se pudo eliminar el archivo\n");
+        
 }
 
+void remonbraFichero(char nombreViejo[100], char nombreNuevo[100]){
+	
+	if(rename(nombreViejo,nombreNuevo)!=0) // renombrado el archivo
+         printf("No se pudo ser renombrado\n");
+       
+}
  
