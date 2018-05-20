@@ -22,6 +22,9 @@
 //Metodo ara convertir cadena de caracteres de mayusculas a minusculas
 char *strlwr(char *str);
 
+//Elimina ficheros con la direccion dada
+void eliminaFichero(char dirArchivo[100]);
+
 //-------------------------------------------		
 
 
@@ -220,8 +223,7 @@ int cantPalabras(){
 	return cont;	
 }
 
-void creaArchivoDiccionarioNombre(int nodo, char texto[500]){
-	FILE *archivo;
+char* nombreArchivoNodo(int nodo){
 	char numNodo[2] = {0};
 	char* nombreArchNodo = malloc(35);
 	//transforma int a char
@@ -231,12 +233,22 @@ void creaArchivoDiccionarioNombre(int nodo, char texto[500]){
 	strcpy(nombreArchNodo,"diccionario_palabras_nodo_");
 	strcat(nombreArchNodo,numNodo);
 	strcat(nombreArchNodo,".txt");
+	
+	return nombreArchNodo;
+}
 
+void creaArchivoDiccionarioNombre(int nodo, char texto[500]){
+	FILE *archivo;
+	char numNodo[2] = {0};
+	char nombreArchNodo[50];
+  
+    strcpy(nombreArchNodo,nombreArchivoNodo(nodo));
+	
 	archivo = fopen(nombreArchNodo,"a+");
 	
 	fputs(texto,archivo);
 	//Libera el espacio de memoria reservado para el nombre del achivo 
-	free(nombreArchNodo);
+	//free(nombreArchNodo);
 	
 	fclose(archivo);
 }
@@ -275,6 +287,14 @@ void archivoPalabrasXnodo(int cantNodos){
 	    	}
         }   
 	fclose(archivo);
+}
+
+void eliminaFichero(char dirArchivo[100]){
+	
+	if(remove(dirArchivo)==0) // Eliminamos el archivo
+        printf("El archivo fue eliminado satisfactoriamente\n");
+    else
+        printf("No se pudo eliminar el archivo\n");
 }
 
  
