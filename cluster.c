@@ -24,6 +24,7 @@ char *strlwr(char *str);
 
 //-------------------------------------------		
 
+
 //------METODOS PARA GENERAR ARCHIVOS DEPALABRAS CONTADAS------------
 //Metodo para obtener la palabra el diccionario y llama metodo cuenta palabras para contabilizar de una vez
 void obtinePalabraDiccionario();		
@@ -47,7 +48,7 @@ void cuentaPalabras(char palabra[]);
 		*******************************************/
  
 void main(){
- 	
+ 	//obtineDefinicionDiccionario();
 	obtinePalabraDiccionario();
 }
 
@@ -57,8 +58,7 @@ void main(){
 
 		*******************************************/
 		
-char *strlwr(char *str)
-{
+char *strlwr(char *str){
   unsigned char *p = (unsigned char *)str;
 
   while (*p) {
@@ -81,7 +81,8 @@ int loencontre(int pos, int tp, char texto[300], char palabra[]) {
 
   }
   aux[tp]='\0';
- 
+ //AUX ES LA PALABRA SACADA DE LA FILA 
+ //LO QUE SE PUEDE HACER ES 
   if ( strcmp(aux,palabra) ==0 )
       return 1;
   else
@@ -110,7 +111,6 @@ void creaArchivoCantPalabras(char palabra[], int cantidad){
  	fclose ( fp );
 }
 
- 
 void cuentaPalabras(char palabra[]){
 	FILE *archivo;	
  	char texto[300];
@@ -148,13 +148,10 @@ void cuentaPalabras(char palabra[]){
     
 }
 
-
-
 void obtinePalabraDiccionario(){
 	FILE *archivo;
 	char *caracter[20]={0};
-	char word[300]={0};
-	int fElement =0;
+	char definicion[300]={0};
 	
 	archivo = fopen(diccionario,"r");
 	
@@ -167,18 +164,21 @@ void obtinePalabraDiccionario(){
             
             while(feof(archivo) == 0)
 	    	{		
-				//Toma la primera palabra 
+				//Obtiene palabra
 			    fscanf(archivo,"%s",&caracter);
-				// Necesario para poderer mover el apuntador al final de la fila
-				fgets(word,300,archivo);
+				// Obtiene definicion 
+				fgets(definicion,300,archivo);
 				
-			    cuentaPalabras(strlwr(caracter));
-				
-				
-				//printf("%s\n", strlwr(caracter));
-			
+				printf("%s\n",definicion);
+			    
+				cuentaPalabras(strlwr(caracter));
 	    	}
         }   
 	fclose(archivo);	
 }
+
+void obtineDefinicionDiccionario(char caracter, char definicion[300]){
+		
+}
+
  
