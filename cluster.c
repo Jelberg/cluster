@@ -39,7 +39,7 @@ char* nombreArchivoNodo(int nodo);
 
 //------METODOS PARA GENERAR ARCHIVOS DE PALABRAS CONTABILIZADAS------------
 //Metodo para obtener la palabra el diccionario y llama metodo cuentapalabras() para contabilizar de una vez
-void obtinePalabraDiccionario();		
+void obtinePalabraDiccionario(); //esta es la funcion principal	
 		
 //Metodo compara la palabra a buscar con la oracion que se le manda
 // pos = es la posicion de la oracion de la fila 
@@ -63,10 +63,10 @@ void cuentaPalabras(char palabra[]);
 //devuelve un int con la cantidad de palabras del diccionario
 int cantPalabras();
 
-// Metodo para crear archivos para diicionario particular tantos archivos como nodos haya para la reparticion de las palabras
-void archivoPalabrasXnodo(int cantNodos);
+// Metodo divide las palabras el diccionario y llama a creaArchivoDiccionarioNombre() para que genere el archivo correspondiente al nodo
+void archivoPalabrasXnodo(int cantNodos);// este es el principal 
 
-//crea archivo con nombre de nodo y carga con palabras particulares, el cual llama creaArchivoDiccionarioNombre()
+//crea archivo con nombre de nodo y carga con palabras particulares
 void creaArchivoDiccionarioNombre(int nodo, char texto[500]);
 
 //-------------------------------------------------------------------------------- 
@@ -77,7 +77,7 @@ void creaArchivoDiccionarioNombre(int nodo, char texto[500]);
 void buscarPalabraLibro(char palabra[], char definicion[500]);
 
 //Metedo que saca palabra y definicion del diccionario particular para mandarlo al metodo buscaPalabraLibro()
-void sustituir();
+void sustituir();//metdod principal 
 
 //--------------------------------------------------------------------------------------
  
@@ -391,9 +391,4 @@ void sustituir(){
 	fclose(archivo);	
 }
 
-void aa(){
-	
-	
-	
-}
  
