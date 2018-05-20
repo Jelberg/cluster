@@ -25,8 +25,8 @@ char *strlwr(char *str);
 //-------------------------------------------		
 
 
-//------METODOS PARA GENERAR ARCHIVOS DEPALABRAS CONTADAS------------
-//Metodo para obtener la palabra el diccionario y llama metodo cuenta palabras para contabilizar de una vez
+//------METODOS PARA GENERAR ARCHIVOS DE PALABRAS CONTABILIZADAS------------
+//Metodo para obtener la palabra el diccionario y llama metodo cuentapalabras() para contabilizar de una vez
 void obtinePalabraDiccionario();		
 		
 //Metodo compara la palabra a buscar con la oracion que se le manda
@@ -35,13 +35,14 @@ int loencontre(int pos, int tp, char texto[500], char palabra[]);
 //Metodo para crear un archivo con las palabras contabilizadas 
 void creaArchivoCantPalabras(char palabra[], int cantidad);
 
-// Metodo llama a loencontre al cual le pasa la oracion de la fila, lleva la cuenta de la ocurrencia de las palabras
+// Metodo llama a loencontre() al cual le pasa la oracion de la fila, lleva la cuenta de la ocurrencia de las palabras
 // Este metodo procesa solo 1 palabra
+// tambien llama metodo creaArchivoCantPalabras(), pasandole la palabra y la cantidad encontrada para que lo aaa al archivo
 void cuentaPalabras(char palabra[]);
  
  //------------------------------------------------------------------
  
-//---------------METODOS PARA DIVIDIR PALABRAS DEL DICCIONARIO PARA NODOS---------
+//---------------METODOS PARA DIVIDIR PALABRAS DEL DICCIONARIO PARA LOS NODOS---------
 
 //devuelve un int con la cantidad de palabras del diccionario
 int cantPalabras();
@@ -49,7 +50,7 @@ int cantPalabras();
 // Metodo para crear archivos para diicionario particular tantos archivos como nodos haya para la reparticion de las palabras
 void archivoPalabrasXnodo(int cantNodos);
 
-//crea archivo con nombre de nodo y carga con palabras particulares
+//crea archivo con nombre de nodo y carga con palabras particulares, el cual llama creaArchivoDiccionarioNombre()
 void creaArchivoDiccionarioNombre(int nodo, char texto[500]);
 
 //-------------------------------------------------------------------------------- 
@@ -219,9 +220,10 @@ void creaArchivoDiccionarioNombre(int nodo, char texto[500]){
 	FILE *archivo;
 	char numNodo[2] = {0};
 	char* nombreArchNodo = malloc(35);
-	
+	//transforma int a char
 	sprintf(numNodo,"%d",nodo);
 	
+	//crea el nombre del archivo para el nodo
 	strcpy(nombreArchNodo,"diccionario_palabras_nodo_");
 	strcat(nombreArchNodo,numNodo);
 	strcat(nombreArchNodo,".txt");
@@ -229,7 +231,7 @@ void creaArchivoDiccionarioNombre(int nodo, char texto[500]){
 	archivo = fopen(nombreArchNodo,"a+");
 	
 	fputs(texto,archivo);
-	
+	//Libera el espacio de memoria reservado para el nombre del achivo 
 	free(nombreArchNodo);
 	
 	fclose(archivo);
@@ -240,8 +242,11 @@ void archivoPalabrasXnodo(int cantNodos){
 	FILE *archivo;
 	char definicion[500]={0};
 	int totalPalabras = cantPalabras();
+	// Divide la cantidad de palabras totales en basse a la cantidad de nodos existentes
 	int cantidadParticular = totalPalabras/cantNodos + 1;
+	// variable usada para llevar cuenta de la cantidad de palabras que se han aniadido al dicionario particular del nodo
 	int sumPalabras =0;
+	// variable usada para saber a que nodo se le estan asignado la lista e palabras 
 	int nodoActual =1;
 	
 	archivo = fopen(diccionario,"r");
