@@ -18,7 +18,7 @@
 //Metodo compara la palabra a buscar con la oracion que se le manda
 int loencontre(int pos, int tp, char texto[100], char palabra[]);
 
-//Metodo para crear un archivo con las palabras contabilizadas DA ERROR
+//Metodo para crear un archivo con las palabras contabilizadas 
 void creaArchivoCantPalabras(char palabra[], int cantidad);
 
 // Metodo llama a loencontre al cual le pasa la oracion de la fila, lleva la cuenta de la ocurrencia de las palabras
@@ -114,8 +114,6 @@ void cuentaPalabras(char palabra[]){
 	            }
 			}
  	    }
-        printf("\n Se encontro la palabra %i veces \n\n", contador); 
-		
 		fclose(archivo);	
 		
 		creaArchivoCantPalabras(palabra,contador);
