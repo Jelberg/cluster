@@ -12,11 +12,14 @@
 // Direccion de diccionario de palabras 
 #define diccionario "palabras_libro_medicina.txt"
 
-		/****************************************************
+// Direccion de diccionrios particulares del nodo 
+#define diccionarioParticular "Palabras_Grupo02.txt"
 
-			LISTA DE FUNCIONES Y PROCEDIMIENTOS COMENTADAS
+		/***************************************************************
 
-		*****************************************************/
+			      LISTA DE FUNCIONES Y PROCEDIMIENTOS COMENTADAS
+
+		****************************************************************/
 
 //--------------METODOS COMUNES--------------
 //Metodo ara convertir cadena de caracteres de mayusculas a minusculas
@@ -68,25 +71,34 @@ void creaArchivoDiccionarioNombre(int nodo, char texto[500]);
 
 //-------------------------------------------------------------------------------- 
  
-		/*******************************************
+//---------------------METODO PARA SUSTIRUIR DEFINICIONES EN LIBRO -----------------
 
-							MAIN
+//Metodo que crea un archivo nuevo para ir reescribiendo el libro y sustituir la palabra 
+void buscarPalabraLibro(char palabra[], char definicion[500]);
 
-		*******************************************/
+//Metedo que saca palabra y definicion del diccionario particular para mandarlo al metodo buscaPalabraLibro()
+void sustituir();
+
+//--------------------------------------------------------------------------------------
+ 
+		/*************************************************************
+
+							        MAIN
+
+		**************************************************************/
  
 void main(){
  	//obtineDefinicionDiccionario();
 	//obtinePalabraDiccionario();
     //archivoPalabrasXnodo(6);
-	//eliminaFichero(nombreArchivoNodo(3));
-	remonbraFichero(nombreArchivoNodo(2), "HOLABB.txt");
+	sustituir();
 }
 
-		/*******************************************
+		/**************************************************************
 
-			        FUNCIONES Y PROCEDIMIENTOS
+			                FUNCIONES Y PROCEDIMIENTOS
 
-		*******************************************/
+		***************************************************************/
 		
 char *strlwr(char *str){
   unsigned char *p = (unsigned char *)str;
@@ -205,10 +217,6 @@ void obtinePalabraDiccionario(){
 	fclose(archivo);	
 }
 
-void obtineDefinicionDiccionario(char caracter, char definicion[500]){
-		
-}
-
 int cantPalabras(){
 	FILE *archivo;
 	char definicion[500]={0};
@@ -309,5 +317,83 @@ void remonbraFichero(char nombreViejo[100], char nombreNuevo[100]){
 	if(rename(nombreViejo,nombreNuevo)!=0) // renombrado el archivo
          printf("No se pudo ser renombrado\n");
        
+}
+
+
+//|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+void buscarPalabraLibro(char palabra[], char definicion[500]){
+	FILE *archivo, *newLibro ;	
+	char caracter[20]={0};
+ 	
+ 	archivo = fopen("archivo.txt","r");
+ 	newLibro = fopen("NUEVO.txt","a+");
+	 
+ 	if (archivo == NULL)
+ 		exit(1);
+ 	else{
+ 	 
+ 	    while (feof(archivo) == 0){
+			
+			fscanf(archivo,"%s",&caracter);
+			
+			if (strcmp(caracter,palabra) == 0){
+				strcat(caracter," ");
+				//printf("%s\n",caracter);
+				fputs(definicion,newLibro);
+			}
+			else{
+				strcat(caracter," ");
+				//printf("%s %s\n",caracter, palabra);
+				fputs(caracter,newLibro);
+			}
+			/*if (strcmp(caracter,"\n")){
+				fputs(caracter,newLibro);
+			}*/
+			
+ 	    }
+		fclose(archivo);
+		fclose(newLibro);		
+    }
+    
+}
+
+void sustituir(){
+	FILE *archivo;
+	char *caracter[20]={0};
+	char definicion[500]={0};
+	
+	archivo = fopen("diccionariojess.txt","r");
+	
+	if (archivo == NULL)
+        {
+            printf("\nError de apertura del archivo. \n\n");
+        }
+        else
+        {
+            
+            do{		
+				//Obtiene palabra
+			    fscanf(archivo,"%s",&caracter);
+				// Obtiene definicion 
+				fgets(definicion,500,archivo);
+				
+				printf("%s %s\n", caracter,definicion);
+				//Se manda definicion y palabra bala buscar y sustituir
+				buscarPalabraLibro(strlwr(caracter),definicion);
+				
+				eliminaFichero("archivo.txt");
+				remonbraFichero("NUEVO.txt","archivo.txt");
+				
+				
+	    	}while(feof(archivo) == 0);
+        }   
+	fclose(archivo);	
+}
+
+void aa(){
+	
+	
+	
 }
  
