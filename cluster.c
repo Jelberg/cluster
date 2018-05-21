@@ -4,16 +4,16 @@
 #include <ctype.h>
 
 // Direccion del libro 
-#define libroTXT "libro_medicina.txt"
+#define _libroTXT "libro_medicina.txt"
 
 // Direccion archivo generado con cuentas de palabras
-#define countWord "palabras_contabilizadas.txt"
+#define _countWord "palabras_contabilizadas.txt"
 
 // Direccion de diccionario de palabras 
-#define diccionario "palabras_libro_medicina.txt"
+#define _diccionario "palabras_libro_medicina.txt"
 
 // Direccion de diccionrios particulares del nodo 
-#define diccionarioParticular "Palabras_Grupo02.txt"
+#define _diccionarioParticular "Palabras_Grupo02.txt"
 
 		/***************************************************************
 
@@ -39,7 +39,8 @@ char* nombreArchivoNodo(int nodo);
 
 //------METODOS PARA GENERAR ARCHIVOS DE PALABRAS CONTABILIZADAS------------
 //Metodo para obtener la palabra el diccionario y llama metodo cuentapalabras() para contabilizar de una vez
-void obtinePalabraDiccionario(); //esta es la funcion principal	
+//nodo = es el nodo que esta ejecutando la contabilizacion
+void obtinePalabraDiccionario(int nodo); //esta es la funcion principal	
 		
 //Metodo compara la palabra a buscar con la oracion que se le manda
 // pos = es la posicion de la oracion de la fila 
@@ -64,6 +65,7 @@ void cuentaPalabras(char palabra[]);
 int cantPalabras(char nombre[50]);
 
 // Metodo divide las palabras el diccionario y llama a creaArchivoDiccionarioNombre() para que genere el archivo correspondiente al nodo
+// cantNodos = es la cantidad de nodos por las que se va a dividir el archivo 
 void archivoPalabrasXnodo(int cantNodos);// este es el principal 
 
 //crea archivo con nombre de nodo y carga con palabras particulares
@@ -80,7 +82,8 @@ int reemplaza(int valor, int tamPalbra, char fila[500], char palabra[20],char de
 void buscarPalabraLibro(char palabra[], char definicion[500],int valor);
 
 //Metedo que saca palabra y definicion del diccionario particular para mandarlo al metodo buscaPalabraLibro()
-void sustituir();//metdod principal 
+// nodo = es el numero de nodo que va a ejecutarla sustitucion 
+void sustituir(int nodo);//metdod principal 
 
 //--------------------------------------------------------------------------------------
  
@@ -91,10 +94,10 @@ void sustituir();//metdod principal
 		**************************************************************/
  
 void main(){
- 	//obtineDefinicionDiccionario();
-	//obtinePalabraDiccionario();
+	//obtinePalabraDiccionario(1);
     //archivoPalabrasXnodo(6);
-	sustituir();
+	//archivoPalabrasXnodo(6);
+	sustituir(1);
 }
 
 		/**************************************************************
@@ -147,7 +150,7 @@ void creaArchivoCantPalabras(char palabra[], int cantidad){
 	strcat(dest,scantidad);
 	strcat(dest,"\n");
 	
- 	fp = fopen ( countWord , "a+" );
+ 	fp = fopen ( _countWord , "a+" );
 	
  	fputs(dest,fp);
  	
@@ -160,7 +163,7 @@ void cuentaPalabras(char palabra[]){
 	int tp, tam;
 	int contador=0;
  	
- 	archivo = fopen(libroTXT,"r");
+ 	archivo = fopen(_libroTXT,"r");
  	
  	if (archivo == NULL)
  		exit(1);
@@ -193,12 +196,13 @@ void cuentaPalabras(char palabra[]){
     
 }
 
-void obtinePalabraDiccionario(){
+void obtinePalabraDiccionario(int nodo){
 	FILE *archivo;
 	char *caracter[20]={0};
 	char definicion[500]={0};
-	
-	archivo = fopen(diccionario,"r");
+	int cont =0;
+	int cantidad = cantPalabras(nombreArchivoNodo(nodo))-1;
+	archivo = fopen(nombreArchivoNodo(nodo),"r");
 	
 	if (archivo == NULL)
         {
@@ -207,16 +211,16 @@ void obtinePalabraDiccionario(){
         else
         {
             
-            while(feof(archivo) == 0)
+            while(cont < cantidad)
 	    	{		
+				cont++;
 				//Obtiene palabra
 			    fscanf(archivo,"%s",&caracter);
 				// Obtiene definicion 
 				fgets(definicion,500,archivo);
 			    
 				cuentaPalabras(strlwr(caracter));
-				//libera el espacio de memoria reservado de memoria
-				free(caracter);
+
 	    	}
         }   
 	fclose(archivo);	
@@ -278,7 +282,7 @@ void creaArchivoDiccionarioNombre(int nodo, char texto[500]){
 void archivoPalabrasXnodo(int cantNodos){
 	FILE *archivo;
 	char definicion[500]={0};
-	int totalPalabras = cantPalabras(diccionario);
+	int totalPalabras = cantPalabras(_diccionario)-1;
 	// Divide la cantidad de palabras totales en basse a la cantidad de nodos existentes
 	int cantidadParticular = totalPalabras/cantNodos + 1;
 	// variable usada para llevar cuenta de la cantidad de palabras que se han aniadido al dicionario particular del nodo
@@ -286,7 +290,7 @@ void archivoPalabrasXnodo(int cantNodos){
 	// variable usada para saber a que nodo se le estan asignado la lista e palabras 
 	int nodoActual =1;
 	
-	archivo = fopen(diccionario,"r");
+	archivo = fopen(_diccionario,"r");
 	
 	if (archivo == NULL){
             printf("\nError de apertura del archivo. \n\n");
@@ -367,9 +371,8 @@ void buscarPalabraLibro(char palabra[], char definicion[500], int valor){
 	int cont =0;
 	
  	// Direccion del libro 
- 	archivo = fopen("archivo.txt","r");
-    int cantidad = cantPalabras("archivo.txt")-1;
-	 //printf("fil de libro: %d\n",cantidad);
+ 	archivo = fopen(_libroTXT,"r");
+    int cantidad = cantPalabras(_libroTXT)-1;
 	 
  	if (archivo == NULL)
  		exit(1);
@@ -400,17 +403,22 @@ void buscarPalabraLibro(char palabra[], char definicion[500], int valor){
     
 }
 
-void sustituir(){
+void sustituir(int nodo){
 	FILE *archivo;
 	char *caracter[20]={0};
 	char definicion[500]={0};
 	
 	int valor;
 	int cont=0;
-	int cantidad = cantPalabras("diccionariojess.txt")-1;
+	
+	//int cantidad = cantPalabras(nombreArchivoNodo(nodo))-1;
 	
 	//Diireccion del diccionario particular
-	archivo = fopen("diccionariojess.txt","r");
+	//archivo = fopen(nombreArchivoNodo(nodo),"r");
+	
+	
+	int cantidad = cantPalabras("Palabras_Grupo02.txt")-1;
+	archivo = fopen("Palabras_Grupo02.txt","r");
 	
 	//printf("fil de diccionario: %d\n",cantidad);
 	
@@ -433,8 +441,8 @@ void sustituir(){
 				//Se manda definicion y palabra bala buscar y sustituir
 				buscarPalabraLibro(strlwr(caracter),definicion,valor);
 				
-				eliminaFichero("archivo.txt");
-				remonbraFichero("NUEVO.txt","archivo.txt");
+				eliminaFichero(_libroTXT);
+				remonbraFichero("NUEVO.txt",_libroTXT);
 	
 	    	}
         }   

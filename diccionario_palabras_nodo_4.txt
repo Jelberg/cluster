@@ -1,0 +1,202 @@
+interrogatorio "Acción de interrogar a alguien reiteradamente, en especial para aclarar un hecho o sus circunstancias"
+ejercicio "Práctica que sirve para adquirir unos conocimientos o desarrollar una habilidad"
+enfermedad "Alteración leve o grave del funcionamiento normal de un organismo o de alguna de sus partes debida a una causa interna o externa"
+diagnóstico "Que sirve para reconocer"
+patrón "es un tipo de tema de sucesos u objetos recurrentes"
+ﬁebre "Aumento de la temperatura del cuerpo por encima de la normal, que va acompañado por un aumento del ritmo cardíaco y respiratorio, y manifiesta la reacción del organismo frente a alguna enfermedad"
+piel "Capa de tejido resistente y flexible que cubre y protege el cuerpo del ser humano y de los animales"
+tratamiento "Manera de actuar, de comportarse o de proceder una persona en su relación con los demás"
+masculino "Que tiene órganos para fecundar"
+necrosis "Muerte de las células y los tejidos de una zona determinada de un organismo vivo"
+antígeno "Sustancia que al introducirse en el organismo induce en este una respuesta inmunitaria, provocando la formación de anticuerpos"
+óseo "Del hueso o relacionado con él"
+calcio "es un macromineral que cumple una importante función estructural en nuestro organismo al ser parte integrante de huesos y dientes"
+hueso "Pieza dura y resistente del esqueleto de los animales vertebrados, de color blanco amarillento; está formada por sustancia orgánica y sales minerales, y envuelta por una membrana fibrosa"
+mineral "es una sustancia natural, de composición química definida, normalmente sólido e inorgánico, y que tiene una cierta estructura cristalina"
+sulfametoxazol "Antimicrobiano, bactericida de amplio espectro, tipo Sulfonamida. Las sulfonamidas son estructuralmente análogos y antagonistas competitivos del ácido paraaminobenzoico."
+peritonitis "es la inflamacion del peritoneo debido generalmente a una infeccion y cuyos sintomas son dolor abdominal, estrenimiento, vomitos y fiebre."
+anticardiolipina "es una inmunoglobulina adquirida asociada a la formación de coágulos en el interior de los vasos sanguíneos (trombosis) vertebrobasilar."
+antifosfolípidos "es un agente protrombótico, debido a que la presencia de este anticuerpo produce la precipitación y formación de trombos en vivo, por ello las personas con estos anticuerpos pueden tener un riesgo anormalmente alto de coagulación sanguínea."
+necrosis "es el patrón morfológico de la muerte patológica de un conjunto de células o de cualquier tejido en un organismo vivo, provocada por un agente nocivo que causa una lesión tan grave que no se puede reparar o curar."
+eritema "es un término médico dermatológico para un enrojecimiento de la piel condicionado por una inflamación debida a un exceso de riego sanguíneo mediante vasodilatación."
+ciclosporina "es un fármaco inmunosupresor ampliamente usado en el trasplante de ... Además de la medicina de trasplantes, la ciclosporina se usa también en la psoriasis y dermatitis atópica e infrecuentemente en la artritis"
+acetilsalicílico "es un reconocido analgésico, antiinflamatorio y antipirético, popularmente conocido como aspirina"
+formoterol "es una formulación combinada que contiene budesonida y formoterol y es utilizada en el tratamiento del asma y la enfermedad pulmonar obstructiva cronica"
+corticoesteroides "son medicamentos muy utilizados para el tratamiento de diversos trastornos por su gran poder antiinflamatorio."
+colagenasas "son una enzima, más específicamente una metaloproteinasa de matriz que rompe los enlaces peptídicos de los colágenos que pueden ser tipo (I, II, III, IV, V) y que contiene zinc. "
+barotrauma " es el daño al cuerpo provocado por cambios barométricos, es decir, de la presión del aire o del agua. Un tipo común de barotrauma es el de oído que es producido por un cambio de altitud y puede provocar dolor. Esto puede suceder cuando viaja en avión, va en coche por las montañas o bucea. Los buceadores también pueden sufrir de enfermedad por descompresión que afecta todo el cuerpo."
+ceftriaxona "es un antibiótico de la clase cefalosporinas de tercera generación(con un peso molecular de 554,58 Daltones)"
+sibilancias "son un signo de que una persona puede estar presentando problemas respiratorios. El sonido de las sibilancias es más evidente cuando se expulsa el aire (exhalar). También se puede escuchar al tomar aire (inhalar)."
+ictericia "es la coloración amarillenta de la piel y mucosas debida a un aumento de la bilirrubina (valores normales de 0,3 a 1 mg/dl) que se acumula en los tejidos, sobre todo aquellos con mayor número de fibras elásticas (paladar, conjuntiva)."
+atelectasia "es la disminución del volumen pulmonar. Es causada por una obstrucción de las vías aéreas (bronquios o bronquiolos) o por presión en la parte externa del pulmón. Es el colapso de una parte o (con mucha menor frecuencia) de todo el pulmón."
+biopsia "es la extracción de tejido de alguna parte del cuerpo para examinar en el mismo la presencia de una enfermedad. En algunas se extirpa una pequeña muestra de tejido con una aguja mientras que en otras se extrae un nódulo o bulto sospechoso."
+ganglios "Los ganglios linfáticos están presentes a lo largo del cuerpo. Son una parte importante del sistema inmunitario. Ayudan al cuerpo a reconocer y combatir microbios, infecciones y otras sustancias extrañas. El término "ganglios inflamados" hace referencia al agrandamiento de uno o más ganglios linfáticos."
+atelectasia "es la disminución del volumen pulmonar. Es causada por una obstrucción de las vías aéreas (bronquios o bronquiolos) o por presión."
+hepatomegalia "es un aumento patológico del tamaño del hígado. Puede ser originada por diversas enfermedades. Hay que diferenciar este término respecto de hipertrófica hepática, que es el aumento de tamaño del hígado pero solo a expensas de los componentes normales del órgano."
+aminotransferasas "son un conjunto de enzimas del grupo de las .... En la mayoría de tipos de enfermedad hepática, la actividad de la ALT es ... En medicina, el hecho de tener niveles más altos de lo normal de estas."
+hiperemesis "Es la presencia de náuseas y vómitos intensos y persistentes durante el embarazo. Pueden llevar a la deshidratación, pérdida de peso y desequilibrios electrolíticos."
+colestasis " es la detención del flujo de ... de Sistemas - Fisiopatología de la colestasia e hiperbilirrubinemia."
+preeclampsia "es una enfermedad especifica del embarazo que cursa con aumento de la tensión arterial acompañada de proteinuria."
+tramadol "es un analgésico de tipo opioide que alivia el dolor actuando sobre células nerviosas específicas de la médula espinal y del cerebro."
+aciclovir "es un fármaco antiviral derivado de la guanosina que se usa en el tratamiento de ... Gertrude Belle Elion y George H."
+cefalea "o dolor de cabeza representa una de las formas más comunes de dolor en la raza humana. Generalmente el dolor de cabeza se presenta de forma intermitente. Las formas más frecuentes corresponden a la migraña o jaqueca y a la cefalea de tensión."
+mononucleosis "es una enfermedad muy extendida que se conoce como la enfermedad del beso."
+trichiura "es una especie parásita de nematodo del orden Trichurida, produciendo (la hembra) de 2000 a 10000 huevos no embrionados por día, los cuales aún no son infectantes, que son excretados en las heces."
+diloxanida "es un medicamento que se emplea como tratamiento de las infecciones por amebas."
+piperazina "se comenzó a usar como un antihelmíntico en el año 1953 y desde ... Forma sales que son solubles y estables."
+neurocisticercosis "es una enfermedad del sistema nervioso central de origen parasitario ... El ser humano es el huésped definitivo de T. solium, es decir que es el portador del parásito en fase."
+betalactamasas "son enzimas capaces de inactivar los antibióticos de la ... En el momento actual se han descrito más de 160 tipos"
+biliares " La vesícula biliar almacena la bilis que el hígado segrega continuamente. ... forma práctica y didáctica los temas fundamentales de la Medicina."
+embolia "es un coágulo que se desplaza desde el sitio donde se formó a otro lugar en el cuerpo."
+trombo "puede producirse en un vaso sanguíneo y obstruir el flujo sanguíneo en ese lugar, impidiendo el suministro de oxígeno y flujo sanguíneo a los tejidos circundantes."
+dolens " forma subaguda de la flebitis infecciosa, que se manifiesta por un edema blanco especial que ocupa un miembro o un segmento de miembro cuya vena principal está trombosada."
+hemoptisis "es la expulsión de sangre por la boca mediante la tos; es fundamental que este mecanismo esté presente para diferenciarla de otras eliminaciones de sangre por la boca."
+oclusiva " Que se pronuncia poniendo en contacto en un punto los órganos articulatorios, impidiendo así por un instante la salida del aire que luego se expulsa de golpe."
+doppler "es una técnica de imagen utilizada para la exploración de los vasos sanguíneos, sus paredes y su flujo."
+antibiograma " es la prueba microbiológica que se realiza para determinar la susceptibilidad (sensibilidad o resistencia) de una bacteria a un grupo de enfermedades"
+politetraﬂuoroetileno " es un polímero similar al polietileno, en el que los átomos de hidrógeno han sido sustituidos por átomos de flúor."
+prasugrel "es un medicamento que pertenece al grupo de los antiagregantes plaquetarios. Se utiliza en la prevención de trombosis arterial (infarto agudo de personas)."
+abciximab " es un inhibidor de la agregación plaquetaria que se prescribe como glicoproteinas."
+tinzaparina " Medicamento que se usa con otro medicamento llamado warfarina, para tratar los coágulos de sangre que se forman en lo profundo de las venas y para prevenir que se formen nuevos coágulos de sangre."
+warfarina "es un medicamento anticoagulante oral que se usa para prevenir la formación de trombos y émbolos."
+primidona "se usa sola o con otros medicamentos para controlar determinados tipos de convulsiones."
+diltiazem "es el nombre genérico de un medicamento que pertenece a los bloqueadores de los canales de calcio a nivel muscular produciendo vasodilatación, por lo que son usados en medicina en el tratamiento de la hipertensión."
+anestesia "es la ausencia, ya sea total o parcial, de la sensibilidad."
+supraventriculares " es uno de los trastornos del ritmo cardíaco caracterizada por una frecuencia cardíaca acelerada cuya señal eléctrica se origina en el nódulo auriculoventricular o bien en la aurícula cardíaca."
+ﬂutter "es un trastorno del ritmo cardíaco. Esta patología suele ser descubierta en un electrocardiograma de modo fortuito."
+hipoplasia "es una condición congénita, mientras que la hiperplasia generalmente hace referencia a un crecimiento celular excesivo más adelante en la vida."
+arritmias "es un trastorno de la frecuencia cardíaca (pulso) o del ritmo cardíaco."
+engrosamiento "que se agranda o aumenta de volumen."
+hipotensora " es el nombre técnico de una baja presión arterial. Se produce cuando los latidos del corazón, encargados de bombear la sangre al resto del cuerpo, tienen un ritmo más lento de lo habitual."
+eritematoso " es un término médico dermatológico ... Eritema nodoso · Eritema multiforme."
+ototoxicidad "es el efecto nocivo, reversible o irreversible, producido sobre el oído por diversas sustancias denominadas ototóxicos y que afectarán a la audición o al equilibrio."
+exudado "es líquido que se filtra desde los vasos sanguíneos hacia los tejidos cercanos."
+salmonellas "bacterias que son capaces de producir una enfermedad bastante recurrente en animales y en seres vivos."
+prednisona "es un fármaco corticosteroide sintético que se toma usualmente en forma oral, pero puede ser administrado por vía intramuscular (inyección) y es usado para un gran número de afecciones. Tiene principalmente un efecto glucocorticoide."
+orbitario "son las dos cavidades situadas a ambos lados de la línea media de la cara destinadas a alojar los globos oculares y sus anexos."
+pituitario "una glándula compleja que se encuentra en la base del cráneo, conectada al hipotálamo."
+creatininquinasa "es una enzima dimérica compuesta por dos tipos de subunidades monoméricas."
+brucelosis “Enfermedad infecciosa del ganado caprino vacuno y porcino que se transmite al hombre por la ingestión de sus productos”
+pielonefritis “Infección del riñón y de la pelvis renal”
+fibromialgia “Enfermedad que se caracteriza por un dolor muscular crónico de origen desconocido”
+paroxística “Del paroxismo o relacionado con él”
+endocarditis “Inflamación del endocardio”
+arritmia “es un trastorno de la frecuencia cardíaca (pulso) o del ritmo cardíaco”
+calcioantagonistas “Fármaco que disminuye el calcio intracelular por inhibición de los canales lentos del calcio, produciendo vasodilatación en la musculatura lisa arteriolar”
+hemoglobina “Pigmento rojo contenido en los hematíes de la sangre de los vertebrados”
+anamnesia “Conjunto de datos que se recogen en la historia clínica de un paciente con un objetivo diagnóstico”
+pagofagia “es el nombre de la enfermedad por comer hielo o bebidas heladas. Puede deberse a variadas causas”
+esferocitosis “ es una enfermedad caracterizada por anemia hemolítica de severidad variable, con presencia de esferocitos en sangre periférica y una respuesta clínica favorable a la esplenectomía”
+poiquilocitosis “son glóbulos rojos anormalmente formados que se ven en los análisis de sangre en seres humanos”
+microcitosis “La macrocitosis es el aumento del tamaño de los eritrocitos (glóbulos rojos de la sangre”
+eliptocitos “hereditaria es un trastorno que se transmite de padres a hijos, en el cual los glóbulos rojos sanguíneos tienen una forma anormal”
+glicoproteína “son moléculas compuestas por una proteína unida a uno o varios glúcidos, simples o compuestos. Destacan entre otras funciones la estructural” 
+proteolíticas “le ayudan a digerir las proteínas contenidas en los alimentos. Aunque su cuerpo produce esas enzimas en el páncreas”
+enterohepática “donde los fármacos liberados como glucoconjungados, que van hacia el intestino a través de la bilis”
+metionina “es un aminoácido hidrófobo, cuya fórmula química al ser hidrófobo este aminoácido esencial está clasificado como no polar”
+megaloblástica “son un grupo de enfermedades que resultan bien sea de la carencia de vitamina B12 (también llamada Cobalamina)”
+mucocutáneas “son manifestaciones comunes de la infección por el virus de la inmunodeficiencia humana”
+eritropoyesis “es el proceso de producción de glóbulos rojos (eritrocitos). Se estimula mediante la disminución de O2 en la circulación, detectada por los riñones, que entonces secretan la hormona”
+ovalocitos “En un análisis hematológico, la morfología de las células sanguíneas se convierte en una información importante que puede indicar al especialista detalles acerca de la salud del paciente”
+megaloblastos “Eritrocito inmaduro, con núcleo voluminoso, que aparece en la médula ósea y en la sangre periférica en anemias por el déficit de la vitamina”
+hematocrito “Volumen de glóbulos con relación al total de la sangre; se expresa de manera porcentual”
+homocisteína “es un aminoácido azufrado importante en la transferencia de grupos metilos en el metabolismo celular, este ha sido considerado factor influyente en el desarrollo de enfermedades cardiovasculares y cerebrovasculares”
+metilmalónico “Las concentraciones de ácido metilmalónico séricas se determinan mediante cromatografía de gases con espectrometría de masa”
+pepsinógeno “es una proenzima, precursora de la pepsina. Es secretada por las células principales o zimogénicas, halladas en las glándulas fúndicas u oxínticas del estómago, que se encuentran principalmente en el cuerpo y fondo del mismo”
+esferocitosis “es una enfermedad caracterizada por anemia hemolítica de severidad variable, con presencia de esferocitos en sangre periférica y una respuesta clínica favorable a la esplenectomía”
+eliptocitosis “es una alteración poco frecuente de la membrana de los eritrocitos, con manifestaciones clínica y genéticamente heterogéneas, caracterizada por anemia hemolítica que varía de leve a grave”
+hemoglobinopatías “a cierto tipo de defecto, generalmente de carácter hereditario, que tiene como consecuencia una estructura anormal en una de las cadenas de las globina de la molécula de hemoglobina”
+turricefalia “Se trata de una forma mixta, es decir una modalidad de craneosisnostósis en la que se encuentran involucradas varias suturas”
+Hipofosfatemia “puede describirse como la presencia de niveles bajos de fosfato inorgánico en la sangre”
+cefalosporinas “son antibióticos del grupo de los beta-lactámicos derivados semisintéticos de la cefalosporina C. Son semejantes a las penicilinas”
+isoniacida “es un fármaco antituberculoso activo frente a Mycobacterium tuberculosis. Se trata de un fármaco de primera línea en el tratamiento de la tuberculosis”
+metildopa “se usa para tratar la hipertensión arterial. La metildopa se encuentra en una clase de medicamentos llamados antihipertensivos. Trabaja mediante la relajación de los vasos sanguíneos”
+clorpromacina “es un medicamento neuroléptico, categorizado dentro de los antipsicóticos clásicos o típicos. Su descubrimiento para posterior uso en la Psiquiatría se denomina la Cuarta revolución en Psiquiatría” 
+linfomas “on un conjunto de enfermedades neoplásicas que se desarrollan en el sistema linfático, que también forman parte del sistema inmunitario del cuerpo humano”
+haptoglobina “es una proteína plasmática que se une a la hemoglobina libre formando complejos de hemoglobina-haptoglobina, retirados de la circulación a través del hígado y catabolizados por las células del parénquima hepático”
+hemosiderinuria “hemosiderinuria”
+hemopexina “es la proteína plasmática con mayor afinidad al grupo hemo, siendo el principal mecanismo para transportar y eliminar el grupo hemo del plasma”
+tejido "combinación definida de elementos anatómicos"
+diagnóstico "dícese de los signos que permite reconocer las enfermedades"
+crónico "aplícase a las enfermedades muy largas o habituales"
+mieloma "crecimiento anormal de las células de la médula roja de los huesos"
+litiasis "formación de piedras en algún órgano del cuerpo"
+pirosis "sensación de quemadura en el estómago"
+disfagia "dificultad para tragar"
+etiología "parte de la medicina que estudia las causas de las enfermedades"
+feocromocitoma "tumor de la médula suprarrenal de la glándula adrenal"
+tumefacción "hinchazón que se forma en una parte del cuerpo"
+disnea "ahogo o dificultad en la respiración"
+parestesia "sensación anormal debida a un trastorno funcional del sistema nervioso"
+hiporreflexia "disminución de las respuestas reflejas"
+oliguria "disminución de la producción de orina"
+anuria "suspensión de la secreción de orina"
+fístula "conexión anormal de dos partes del cuerpo"
+fibrosis "formación patológica de tejido fibroso en un órgano del cuerpo"
+flogosis "enrojecimiento y calor que caracteriza la inflamación"
+testosterona "hormona sexual masculina"
+polidactilia "trastorno genético donde un humano nace con más dedos en la mano o en el pie"
+dislipidemia "alteración de los niveles de lípidos en la sangre"
+coagulacion "proceso por el cual la sangre pierde su liquidez"
+orquitis "inflamación de testículo"
+bacilo "bacteria de forma cilíndrica alargada"
+tórpida "que reacciona con dificultad o torpeza"
+edema "hinchazón causada por acumulación de líquido en los tejidos"
+demencia "pérdida o debilitamiento de las facultades mentales"
+descomprensión "reducción de presión a que ha estado sometido un cuerpo"
+urocultivo "prueba para diagnosticar infección urinaria"
+anemia "falta de suficientes glóbulos rojos"
+aplasia "falta de desarrollo de un tejido o de un órgano"
+bacilo "bacteria alargada y cilíndrica"
+gluten "proteína de reserva nutritiva"
+estenosis "estrechamiento de un orificio o conducto"
+psicoterapia "Tratamiento de enfermedades mentales y problemas de conducta medi$
+glaucoma "aumento de la presión intraocular en el ojo"
+suprarrenal "Situado encima de los riñones"
+edema "Hinchazón blanda de una parte del cuerpo"
+insulina "regula la cantidad de glucosa existente en la sangre"
+ictericia "Coloración amarilla de la piel y las mucosas"
+aerobios "necesita oxígeno para subsistir"
+paresia "Parálisis leve"
+micosis "Infección producida por ciertos hongos"
+hepatitis "Inflamación del hígado"
+treponema "Género de bacterias del grupo de las espiroquetas"
+acintados "tiene forma de cinta"
+nodular "Perteneciente o relativo a un nódulo"
+prurito "Comezón o picazón"
+prurito "Comezón o picazón"
+etiología "Estudio de las causas de las enfermedades"
+hematuria "Presencia de sangre en la orina"
+intersticial "ocupa los intersticios que existen en un cuerpo o entre dos o más"
+contracción "Acción y efecto de contraer o contraerse"
+enzima "Proteína que cataliza específicamente una reacción bioquímica del metab$
+sintomático "Perteneciente o relativo al síntoma"
+vascular "Perteneciente o relativo a los vasos de las plantas o de los animales"
+fisioterapia "Tratamiento y curación de las enfermedades por medio de agentes n$
+tendinosa "tiene tendones o se compone de ellos"
+exacerbación "acción de agravar o avivar una enfermedad"
+isquémico "Perteneciente o relativo a la disminución transitoria o permanente d$
+Adinamia "ausencia de movimiento o reacción."
+Aducción "aproximación del miembro a la linea media "
+Derm- "prefijo que denota relación con la piel o capa germinal"
+Dermatitis "inflamación de la piel"
+Escorbuto "enfermedad producida por falta de vitamina C"
+Estatinas "fármacos hipolipemiantes"
+Glucosuria "presencia de glucosa en la orina."
+Glasgow "escala para medir el nivel de conciencia." 
+Hemoptisis "expulsión de sangre por la boca, proveniente de las vías áereas."
+Hemograma "análisis morfológico y numérico de los elementos formes de la sangre."
+MAb "anticuerpo monoclonal."
+MALT "tejido linfoide asociado a las mucosas."
+Meningitis "inflamación de las meninges."
+Nasogástrico "que va de la nariz al estómago."
+Neumotórax "es la presencia de aire en el espacio pleural."
+braquial "entrecruzamiento de nervios que tiene lugar bajo la fosa supraclavicular."
+sacro "es el plexo constituido por las anastomosis que forman entre sí la mayoría de las ramas nerviosas sacras." 
+Rabdomiólisis "destrucción de músculo estriado."
+Radiografía "placa fotográfica revelada que muestra imágenes del cuerpo humano empleando rayos X para su obtención."
+Uréter "los uréteres son un par de conductos que transportan la orina desde la pelvis renal hasta la vejiga urinaria."
+Urticaria "lesión cutánea edematosa." 
+Antipiréticos "fármacos eficaces contra la fiebre."
+Apósito "material terapéutico que se aplica sobre una lesión."
+Apraxia "movimientos desordenados."
