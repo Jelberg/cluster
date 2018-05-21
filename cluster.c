@@ -61,7 +61,7 @@ void cuentaPalabras(char palabra[]);
 //---------------METODOS PARA DIVIDIR PALABRAS DEL DICCIONARIO PARA LOS NODOS---------USO PARA EL COORDINADOR------
 
 //devuelve un int con la cantidad de palabras del diccionario
-int cantPalabras();
+int cantPalabras(char nombre[50]);
 
 // Metodo divide las palabras el diccionario y llama a creaArchivoDiccionarioNombre() para que genere el archivo correspondiente al nodo
 void archivoPalabrasXnodo(int cantNodos);// este es el principal 
@@ -73,8 +73,11 @@ void creaArchivoDiccionarioNombre(int nodo, char texto[500]);
  
 //---------------------METODO PARA SUSTIRUIR DEFINICIONES EN LIBRO -----------------
 
-//Metodo que crea un archivo nuevo para ir reescribiendo el libro y sustituir la palabra 
-void buscarPalabraLibro(char palabra[], char definicion[500]);
+//metoddo reemplaza la palabra con el valor y genera un archivo nuevo
+int reemplaza(int valor, int tamPalbra, char fila[500], char palabra[20],char definicion[500], int val);
+
+//Metodo obtiene fila de libro y lo manda a comparr con el metodo reemplza() para que haga su trabajo 
+void buscarPalabraLibro(char palabra[], char definicion[500],int valor);
 
 //Metedo que saca palabra y definicion del diccionario particular para mandarlo al metodo buscaPalabraLibro()
 void sustituir();//metdod principal 
@@ -173,6 +176,8 @@ void cuentaPalabras(char palabra[]){
 			
 			//printf("\n palabra: %i texto: %i \n\n", tp,tam);  
 			
+			//Se usa un for para mandar la posicion i a loencontre() de tal manera que el 
+			//concatene las siguientes palabras en base al tamo e la palabra buscada  
 			for (int i=0; i< tam ; i++){
 			   
 			   if ( loencontre(i,tp,texto,palabra)){
@@ -217,12 +222,12 @@ void obtinePalabraDiccionario(){
 	fclose(archivo);	
 }
 
-int cantPalabras(){
+int cantPalabras(char nombre[50]){
 	FILE *archivo;
 	char definicion[500]={0};
 	int cont = 0;
 	
-	archivo = fopen(diccionario,"r");
+	archivo = fopen(nombre,"r");
 	
 	if (archivo == NULL){
             printf("\nError de apertura del archivo. \n\n");
@@ -273,7 +278,7 @@ void creaArchivoDiccionarioNombre(int nodo, char texto[500]){
 void archivoPalabrasXnodo(int cantNodos){
 	FILE *archivo;
 	char definicion[500]={0};
-	int totalPalabras = cantPalabras();
+	int totalPalabras = cantPalabras(diccionario);
 	// Divide la cantidad de palabras totales en basse a la cantidad de nodos existentes
 	int cantidadParticular = totalPalabras/cantNodos + 1;
 	// variable usada para llevar cuenta de la cantidad de palabras que se han aniadido al dicionario particular del nodo
@@ -320,14 +325,52 @@ void remonbraFichero(char nombreViejo[100], char nombreNuevo[100]){
 }
 
 
-//|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+//|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-void buscarPalabraLibro(char palabra[], char definicion[500]){
-	FILE *archivo, *newLibro ;	
-	char caracter[20]={0};
- 	
+int reemplaza(int valor, int tamPalbra, char fila[500], char palabra[20],char definicion[500], int val){
+	FILE *newLibro ;	
+	char aux[20];
+	char copia[20];
+	int auxtam, xi,j;
+		
+	auxtam = valor+tamPalbra;
+
+	
+	//Direccion de un nuevo archivo que va a  ser el nuevo libro 
+ 	newLibro = fopen("NUEVO.txt","a");
+				 
+				 //for para concatenar la palabra  
+				  for ( j= valor, xi=0; j<= auxtam  ; j++,xi++){
+					aux[xi]=tolower(fila[j]);
+				  }  
+				  aux[tamPalbra]='\0';
+
+				  // val = 0 si la palabra no ha sido ya reemplazada y vale 1 en caso contrario
+				   if ( strcmp(aux,palabra) ==0 && (val==0)){
+					  fputs(definicion,newLibro);
+					 fclose(newLibro);
+					 return 1;
+				  }		  
+				  else{
+					  fputs(strncpy(copia,aux,1),newLibro);
+					  fclose(newLibro);
+					  return 0;
+				  }
+    
+}
+
+void buscarPalabraLibro(char palabra[], char definicion[500], int valor){
+	FILE *archivo ;	
+	char fila[500]={0};
+	char aux[20];
+	int tamPalbra=0;
+	int tamFila =0;
+	int i;
+	int cont =0;
+	
+ 	// Direccion del libro 
  	archivo = fopen("archivo.txt","r");
- 	newLibro = fopen("NUEVO.txt","a+");
+    int cantidad = cantPalabras("archivo.txt");
 	 
  	if (archivo == NULL)
  		exit(1);
@@ -335,25 +378,28 @@ void buscarPalabraLibro(char palabra[], char definicion[500]){
  	 
  	    while (feof(archivo) == 0){
 			
-			fscanf(archivo,"%s",&caracter);
 			
-			if (strcmp(caracter,palabra) == 0){
-				strcat(caracter," ");
-				//printf("%s\n",caracter);
-				fputs(definicion,newLibro);
+			fgets(fila,500,archivo);
+			
+			tamPalbra = strlen(palabra);
+			tamFila = strlen(fila);
+			
+		    
+			for (int i=0; i< tamFila ; i++){
+			    if (reemplaza( i, tamPalbra,fila,palabra,definicion,valor)){
+					i = i +tamPalbra-1;
+					//se le da el valor de 1 para que solo reemplce una vez la palabraa
+					valor =1;
+				} 
 			}
-			else{
-				strcat(caracter," ");
-				//printf("%s %s\n",caracter, palabra);
-				fputs(caracter,newLibro);
-			}
-			/*if (strcmp(caracter,"\n")){
-				fputs(caracter,newLibro);
-			}*/
+			
+			cont++;
+			if (cont == cantidad) break; 
+			
 			
  	    }
 		fclose(archivo);
-		fclose(newLibro);		
+		
     }
     
 }
@@ -363,6 +409,10 @@ void sustituir(){
 	char *caracter[20]={0};
 	char definicion[500]={0};
 	
+	int valor;
+	
+	
+	//Diireccion del diccionario particular
 	archivo = fopen("diccionariojess.txt","r");
 	
 	if (archivo == NULL)
@@ -372,23 +422,23 @@ void sustituir(){
         else
         {
             
-            do{		
+            do{	
+				//Este es par que reemplace una sola vez la palabra
+				valor =0;
 				//Obtiene palabra
 			    fscanf(archivo,"%s",&caracter);
 				// Obtiene definicion 
 				fgets(definicion,500,archivo);
 				
-				printf("%s %s\n", caracter,definicion);
 				//Se manda definicion y palabra bala buscar y sustituir
-				buscarPalabraLibro(strlwr(caracter),definicion);
+				buscarPalabraLibro(strlwr(caracter),definicion,valor);
 				
 				eliminaFichero("archivo.txt");
 				remonbraFichero("NUEVO.txt","archivo.txt");
-				
+				//cont++;
+				//if (cont == cantidad) break; 
 				
 	    	}while(feof(archivo) == 0);
         }   
 	fclose(archivo);	
 }
-
- 
