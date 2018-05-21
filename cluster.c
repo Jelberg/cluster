@@ -325,8 +325,6 @@ void remonbraFichero(char nombreViejo[100], char nombreNuevo[100]){
 }
 
 
-//|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
 int reemplaza(int valor, int tamPalbra, char fila[500], char palabra[20],char definicion[500], int val){
 	FILE *newLibro ;	
 	char aux[20];
@@ -370,14 +368,15 @@ void buscarPalabraLibro(char palabra[], char definicion[500], int valor){
 	
  	// Direccion del libro 
  	archivo = fopen("archivo.txt","r");
-    int cantidad = cantPalabras("archivo.txt");
+    int cantidad = cantPalabras("archivo.txt")-1;
+	 //printf("fil de libro: %d\n",cantidad);
 	 
  	if (archivo == NULL)
  		exit(1);
  	else{
  	 
- 	    while (feof(archivo) == 0){
-			
+ 	      while (cont < cantidad){
+			cont++;
 			
 			fgets(fila,500,archivo);
 			
@@ -392,12 +391,9 @@ void buscarPalabraLibro(char palabra[], char definicion[500], int valor){
 					valor =1;
 				} 
 			}
-			
-			cont++;
-			if (cont == cantidad) break; 
-			
-			
+				
  	    }
+
 		fclose(archivo);
 		
     }
@@ -410,10 +406,13 @@ void sustituir(){
 	char definicion[500]={0};
 	
 	int valor;
-	
+	int cont=0;
+	int cantidad = cantPalabras("diccionariojess.txt")-1;
 	
 	//Diireccion del diccionario particular
 	archivo = fopen("diccionariojess.txt","r");
+	
+	//printf("fil de diccionario: %d\n",cantidad);
 	
 	if (archivo == NULL)
         {
@@ -422,7 +421,8 @@ void sustituir(){
         else
         {
             
-            do{	
+            while(cont < cantidad){	
+			    cont++;
 				//Este es par que reemplace una sola vez la palabra
 				valor =0;
 				//Obtiene palabra
@@ -435,10 +435,8 @@ void sustituir(){
 				
 				eliminaFichero("archivo.txt");
 				remonbraFichero("NUEVO.txt","archivo.txt");
-				//cont++;
-				//if (cont == cantidad) break; 
-				
-	    	}while(feof(archivo) == 0);
+	
+	    	}
         }   
 	fclose(archivo);	
 }

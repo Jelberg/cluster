@@ -1,3 +1,4 @@
 mama "2"
 hola "1"
+cornamenta "0"
 
