@@ -1,1 +1,0 @@
-Mostrando el uso de fputs en un fichero.
