@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 
+//                             PARAMETROS FIjOS INICIAN CON "_"
 // Direccion del libro 
 #define _libroTXT "libro_medicina.txt"
 
@@ -61,7 +62,8 @@ void cuentaPalabras(char palabra[]);
  
 //---------------METODOS PARA DIVIDIR PALABRAS DEL DICCIONARIO PARA LOS NODOS---------USO PARA EL COORDINADOR------
 
-//devuelve un int con la cantidad de palabras del diccionario
+//devuelve un int con la cantidad de filas del archivo dado
+//IMPORTANTE : cuando llega al final del documento el asume el salto de linea hay que contabilizarlo
 int cantPalabras(char nombre[50]);
 
 // Metodo divide las palabras el diccionario y llama a creaArchivoDiccionarioNombre() para que genere el archivo correspondiente al nodo
@@ -75,15 +77,12 @@ void creaArchivoDiccionarioNombre(int nodo, char texto[500]);
  
 //---------------------METODO PARA SUSTIRUIR DEFINICIONES EN LIBRO -----------------
 
-//metoddo reemplaza la palabra con el valor y genera un archivo nuevo
-int reemplaza(int valor, int tamPalbra, char fila[500], char palabra[20],char definicion[500], int val);
-
-//Metodo obtiene fila de libro y lo manda a comparr con el metodo reemplza() para que haga su trabajo 
-void buscarPalabraLibro(char palabra[], char definicion[500],int valor);
+//Metodo compara palabra por pabra hasta conseguir la buscada y aniade definicion  
+//void buscarPalabraLibro(char palabra[100], char definicion[500]);
 
 //Metedo que saca palabra y definicion del diccionario particular para mandarlo al metodo buscaPalabraLibro()
 // nodo = es el numero de nodo que va a ejecutarla sustitucion 
-void sustituir(int nodo);//metdod principal 
+//void sustituir(int nodo);//metdod principal 
 
 //--------------------------------------------------------------------------------------
  
@@ -96,7 +95,6 @@ void sustituir(int nodo);//metdod principal
 void main(){
 	//obtinePalabraDiccionario(1);
     //archivoPalabrasXnodo(6);
-	//archivoPalabrasXnodo(6);
 	sustituir(1);
 }
 
@@ -201,8 +199,11 @@ void obtinePalabraDiccionario(int nodo){
 	char *caracter[20]={0};
 	char definicion[500]={0};
 	int cont =0;
-	int cantidad = cantPalabras(nombreArchivoNodo(nodo))-1;
-	archivo = fopen(nombreArchivoNodo(nodo),"r");
+	//int cantidad = cantPalabras(nombreArchivoNodo(nodo))-1;
+	//archivo = fopen(nombreArchivoNodo(nodo),"r");
+	
+	int cantidad = cantPalabras(_diccionarioParticular)-2;
+	archivo = fopen(_diccionarioParticular,"r");
 	
 	if (archivo == NULL)
         {
@@ -328,73 +329,144 @@ void remonbraFichero(char nombreViejo[100], char nombreNuevo[100]){
        
 }
 
+/*
 
-int reemplaza(int valor, int tamPalbra, char fila[500], char palabra[20],char definicion[500], int val){
-	FILE *newLibro ;	
-	char aux[20];
-	char copia[20];
-	int auxtam, xi,j;
-		
-	auxtam = valor+tamPalbra;
-
+void buscarPalabraLibro(char palabra[20], char definicion[500]){
+     FILE *archivo, *newLibro ;     
+     char *caracter[20]={0};
 	
-	//Direccion de un nuevo archivo que va a  ser el nuevo libro 
- 	newLibro = fopen("NUEVO.txt","a");
-				 
-				 //for para concatenar la palabra  
-				  for ( j= valor, xi=0; j<= auxtam  ; j++,xi++){
-					aux[xi]=tolower(fila[j]);
-				  }  
-				  aux[tamPalbra]='\0';
+     archivo = fopen(_libroTXT,"rw+");
 
-				  // val = 0 si la palabra no ha sido ya reemplazada y vale 1 en caso contrario
-				   if ( strcmp(aux,palabra) ==0 && (val==0)){
-					  fputs(definicion,newLibro);
-					 fclose(newLibro);
-					 return 1;
-				  }		  
-				  else{
-					  fputs(strncpy(copia,aux,1),newLibro);
-					  fclose(newLibro);
-					  return 0;
-				  }
-    
+     if (archivo == NULL)
+           exit(1);
+      else{
+			
+          printf("%s %s\n", palabra, definicion);
+		  //while (feof(archivo)==0){
+		  while (fscanf(archivo,"%s",&caracter) != EOF){
+
+			  printf("%s : %s\n", caracter,palabra);
+			  
+			  //printf("%d = %d\n", strlen(caracter),strlen(palabra));
+              if (strcmp(strlwr(caracter),palabra) == 0){	   
+			  
+			       printf(" :,c ! SE HA PRODUCIDO UN ERROR");
+					//Es destructiva, sobreescribe caracteres no aniade (revisar fread y fwrite)					
+                   fprintf(archivo,"%s",definicion);
+				   
+				   break;
+              }     
+         }
+         fclose(archivo);      
+    }
 }
 
-void buscarPalabraLibro(char palabra[], char definicion[500], int valor){
+void sustituir(int nodo){
+     FILE *archivo;
+     char *caracter[20]={0};
+     char definicion[500]={0};
+     //char Nfichero[100] = nombreArchivoNodo(nodo);
+	 char Nfichero[100] = _diccionarioParticular;
+	 int cont=0;
+	 
+	 int cantidad = cantPalabras(Nfichero)-1;
+
+     archivo = fopen(Nfichero,"r");
+	 
+     if (archivo == NULL)
+        {
+            printf("\nError de apertura del archivo. \n\n");
+        }
+        else
+        {
+			// while trata sobre la contidad e filas en el fichero
+            while(cont < cantidad){
+					cont++;
+                    //Obtiene palabra
+ 
+                    fscanf(archivo,"%s",&caracter);
+				   
+                    // Obtiene definicion 
+ 
+                    fgets(definicion,500,archivo);
+         
+                    //printf("%s %s\n", caracter,definicion);
+ 
+                    //Se manda definicion y palabra bala buscar y sustituir
+ 
+                    buscarPalabraLibro(strlwr(caracter),definicion);
+					
+              }
+        }    
+     fclose(archivo);     
+ 
+}
+
+
+
+*/
+
+
+
+
+
+
+//|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+void buscarPalabraLibro(char palabra[], char definicion[500]){
 	FILE *archivo ;	
 	char fila[500]={0};
 	char aux[20];
 	int tamPalbra=0;
 	int tamFila =0;
 	int i;
+	int seguir=0;
 	int cont =0;
+	int auxtam, xi,j;
 	
  	// Direccion del libro 
- 	archivo = fopen(_libroTXT,"r");
+ 	archivo = fopen(_libroTXT,"rw+");
     int cantidad = cantPalabras(_libroTXT)-1;
 	 
  	if (archivo == NULL)
  		exit(1);
  	else{
- 	 
+		  //while en base a la cantidad de filas del libro 
  	      while (cont < cantidad){
 			cont++;
 			
+			//Toma la fila del libro
 			fgets(fila,500,archivo);
 			
 			tamPalbra = strlen(palabra);
 			tamFila = strlen(fila);
 			
-		    
 			for (int i=0; i< tamFila ; i++){
-			    if (reemplaza( i, tamPalbra,fila,palabra,definicion,valor)){
-					i = i +tamPalbra-1;
-					//se le da el valor de 1 para que solo reemplce una vez la palabraa
-					valor =1;
-				} 
-			}
+
+					
+					auxtam = i+tamPalbra;
+					//for para concatenar la palabra  
+					  for ( j= i, xi=0; j<= auxtam  ; j++,xi++){
+						  
+						aux[xi]=tolower(fila[j]);
+						
+					  }  
+					  aux[tamPalbra]='\0';
+										
+					// val = 0 si la palabra no ha sido ya reemplazada y vale 1 en caso contrario
+
+				   if ( strcmp(aux,palabra) ==0){
+					 printf("Se sustituyo : %s\n", palabra);  
+					 fprintf(archivo,definicion);
+					 
+					 seguir=1;
+				  }		
+					// Esta pregunta es para que salga del ciclo for por que ya sustituyo la palabra 
+					if (seguir)	break;
 				
+			}
+			if (seguir)	break;	
  	    }
 
 		fclose(archivo);
@@ -407,8 +479,6 @@ void sustituir(int nodo){
 	FILE *archivo;
 	char *caracter[20]={0};
 	char definicion[500]={0};
-	
-	int valor;
 	int cont=0;
 	
 	//int cantidad = cantPalabras(nombreArchivoNodo(nodo))-1;
@@ -417,7 +487,7 @@ void sustituir(int nodo){
 	//archivo = fopen(nombreArchivoNodo(nodo),"r");
 	
 	
-	int cantidad = cantPalabras("Palabras_Grupo02.txt")-1;
+	int cantidad = cantPalabras("Palabras_Grupo02.txt")-2;
 	archivo = fopen("Palabras_Grupo02.txt","r");
 	
 	//printf("fil de diccionario: %d\n",cantidad);
@@ -431,20 +501,18 @@ void sustituir(int nodo){
             
             while(cont < cantidad){	
 			    cont++;
-				//Este es par que reemplace una sola vez la palabra
-				valor =0;
 				//Obtiene palabra
 			    fscanf(archivo,"%s",&caracter);
 				// Obtiene definicion 
 				fgets(definicion,500,archivo);
-				
 				//Se manda definicion y palabra bala buscar y sustituir
-				buscarPalabraLibro(strlwr(caracter),definicion,valor);
-				
-				eliminaFichero(_libroTXT);
-				remonbraFichero("NUEVO.txt",_libroTXT);
+				buscarPalabraLibro(strlwr(caracter),definicion);
+
 	
 	    	}
         }   
 	fclose(archivo);	
 }
+//|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+ 
