@@ -35,6 +35,8 @@ void remonbraFichero(char nombreViejo[100], char nombreNuevo[100]);
 // Devuelve nombre de archivo para el diccionario particular de los nodos 
 char* nombreArchivoNodo(int nodo);
 
+char* transformaFicheroToChar(int tam);
+
 //-------------------------------------------		
 
 
@@ -64,7 +66,7 @@ void cuentaPalabras(char palabra[]);
 
 //devuelve un int con la cantidad de filas del archivo dado
 //IMPORTANTE : cuando llega al final del documento el asume el salto de linea hay que contabilizarlo
-int cantPalabras(char nombre[50]);
+int cantFilas(char nombre[50]);
 
 // Metodo divide las palabras el diccionario y llama a creaArchivoDiccionarioNombre() para que genere el archivo correspondiente al nodo
 // cantNodos = es la cantidad de nodos por las que se va a dividir el archivo 
@@ -94,10 +96,18 @@ void sustituir(int nodo);//metdod principal
  
 void main(){
 	
-	
-	obtinePalabraDiccionario(1); // Contabiliza las palabras, lo ejecutan los demas nodos 
+	//obtinePalabraDiccionario(1); // Contabiliza las palabras, lo ejecutan los demas nodos 
     //archivoPalabrasXnodo(6);  //Metodo independiente por que es el que activa el nodo coordinador el cual crea 6 archivos
 	//sustituir(1); //Antes de sustituir de debe ejecutar archivosPalabrasXnodo porque generan los diccionarios partidular y el cual ejecuta nodo 1 por qe es el parametro que se le pasa
+	
+	int cantidad = cantidadCaracteres();
+	
+	//char texto[cantidad];
+	
+	//texto = transformaFicheroToChar(cantidad);
+	
+	//printf("%d",cantidad);
+	generaArchivoFromChar(transformaFicheroToChar(cantidad),cantidad);
 	
 }
 
@@ -203,10 +213,10 @@ void obtinePalabraDiccionario(int nodo){
 	char definicion[500]={0};
 	int cont =0;
 	
-	int cantidad = cantPalabras(nombreArchivoNodo(nodo))-2;
+	int cantidad = cantFilas(nombreArchivoNodo(nodo))-2;
 	archivo = fopen(nombreArchivoNodo(nodo),"r");
 	
-	//int cantidad = cantPalabras(_diccionarioParticular)-2;
+	//int cantidad = cantFilas(_diccionarioParticular)-2;
 	//archivo = fopen(_diccionarioParticular,"r");
 	
 	if (archivo == NULL)
@@ -231,7 +241,7 @@ void obtinePalabraDiccionario(int nodo){
 	fclose(archivo);	
 }
 
-int cantPalabras(char nombre[50]){
+int cantFilas(char nombre[50]){
 	FILE *archivo;
 	char definicion[500]={0};
 	int cont = 0;
@@ -287,7 +297,7 @@ void creaArchivoDiccionarioNombre(int nodo, char texto[500]){
 void archivoPalabrasXnodo(int cantNodos){
 	FILE *archivo;
 	char definicion[500]={0};
-	int totalPalabras = cantPalabras(_diccionario)-1;
+	int totalPalabras = cantFilas(_diccionario)-1;
 	// Divide la cantidad de palabras totales en basse a la cantidad de nodos existentes
 	int cantidadParticular = totalPalabras/cantNodos + 1;
 	// variable usada para llevar cuenta de la cantidad de palabras que se han aniadido al dicionario particular del nodo
@@ -347,7 +357,7 @@ void buscarPalabraLibro(char palabra[], char definicion[500], int row){
 	
  	// Direccion del libro 
  	archivo = fopen(_libroTXT,"rw+");
-    int cantidad = cantPalabras(_libroTXT)-1;
+    int cantidad = cantFilas(_libroTXT)-1;
 	 
  	if (archivo == NULL)
  		exit(1);
@@ -401,13 +411,13 @@ void sustituir(int nodo){
 	char definicion[500]={0};
 	int cont=0;
 	
-	int cantidad = cantPalabras(nombreArchivoNodo(nodo))-1;
+	int cantidad = cantFilas(nombreArchivoNodo(nodo))-1;
 	
 	//Diireccion del diccionario particular
 	archivo = fopen(nombreArchivoNodo(nodo),"r");
 	
 	
-	//int cantidad = cantPalabras("Palabras_Grupo02.txt")-2;
+	//int cantidad = cantFilas("Palabras_Grupo02.txt")-2;
 	//archivo = fopen("Palabras_Grupo02.txt","r");
 	
 	
@@ -432,3 +442,62 @@ void sustituir(int nodo){
         }   
 	fclose(archivo);	
 }
+
+int tamFichero(){
+	FILE *fich;
+
+  fich=fopen("/home/elberg/Escritorio/hola.txt","r");
+
+  fseek(fich, 0L, SEEK_END);
+
+  return ftell(fich);
+  fclose(fich);
+}
+
+
+
+//-------------------- PRUEBAA
+char* transformaFicheroToChar(int tam){
+	FILE *archivo ;	
+	char* caracter = malloc(tam);
+    //char* nombreArchNodo = malloc(35);
+	int xi =0;
+	archivo = fopen(_diccionarioParticular,"r");
+	
+	while(caracter[xi]=fgetc(archivo) != EOF) {
+		xi++;
+	}
+	fclose(archivo);
+	return caracter;
+	
+}
+
+int cantidadCaracteres(){
+	FILE *archivo ;	
+	char caracter;
+	int xi =0;
+	archivo = fopen(_diccionarioParticular,"r");
+	
+	while(caracter=fgetc(archivo) != EOF) {
+		xi++;
+	}
+	fclose(archivo);
+	return xi;
+	
+	
+}
+
+void generaArchivoFromChar(char texto[], int cantidadCaracteres){
+	FILE *archivo ;	
+	int i;
+	archivo = fopen("nuevo_libro.txt","a");
+	
+	for (i=0 ; i < cantidadCaracteres ; i++){
+		fputc(texto[i],archivo);
+	}
+	
+	
+	fclose(archivo);
+}
+
+
