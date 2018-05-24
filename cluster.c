@@ -127,13 +127,13 @@ void main(int argc, char** argv){
 	
 	if (my_id == 0) {
 		
-		int i = 2; //Empieza en 3 porque el nodo 1 tiene ya lso archivos libro y diccionario, 
+		int i = 2; //Empieza en 2 porque el nodo 1 tiene ya lso archivos libro y diccionario, 
 		// Node 1 tiene el proceso 1 y 0 que es el coordinador		
 		
 		while (i < nproc){// Este while es para que mande el LIBRO a los procesos 
 			emisorArchivo(i, _libroTXT);
 			
-			i= i+2;//Porque 2 procesos comparten disco
+			i= i+2;//Porque 2 procesos comparten disco y  estan ligados a su impar siguiente
 		}
 		// espues de mandar el libro genera archivos con la cantidad de palabras correspondientes por nodo
 		archivoPalabrasXnodo(nproc-1);
