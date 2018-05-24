@@ -6,16 +6,16 @@
 
 //                             PARAMETROS FIjOS INICIAN CON "_"
 // Direccion del libro 
-#define _libroTXT "libro_medicina.txt"
+#define _libroTXT "/local_home/jelberg.12/libro_medicina.txt"
 
 // Direccion archivo generado con cuentas de palabras
-#define _countWord "palabras_contabilizadas.txt"
+#define _countWord "/local_home/jelberg.12/palabras_contabilizadas.txt"
 
 // Direccion de diccionario de palabras 
-#define _diccionario "palabras_libro_medicina.txt"
+#define _diccionario "/local_home/jelberg.12/palabras_libro_medicina.txt"
 
 // Direccion de diccionrios particulares del nodo 
-#define _diccionarioParticular "Palabras_Grupo02.txt"
+#define _diccionarioParticular "/local_home/jelberg.12/Palabras_Grupo02.txt"
 
 		/***************************************************************
 
@@ -39,7 +39,7 @@ char* nombreArchivoNodo(int nodo);
 //-------------------------------------------		
 
 
-//###############METODOS USADOS PARA EL ENVIO Y RECEPCION DE ARCHIVOS----------
+//###############   METODOS USADOS PARA EL ENVIO Y RECEPCION DE ARCHIVOS----------
 
 //Metodo para saber la antidad de caracteres que posee el fichero dado
 int cantidadCaracteres(char dir[]);
@@ -119,18 +119,29 @@ void main(int argc, char** argv){
 	//sustituir(1); //Antes de sustituir de debe ejecutar archivosPalabrasXnodo porque generan los diccionarios partidular y el cual ejecuta nodo 1 por qe es el parametro que se le pasa
 	MPI_Init(&argc, &argv);
 	
-	int my_id;
+	int my_id, nproc;
 
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_id);
+	MPI_Comm_size(MPI_COMM_WORLD, &nproc);
+	
 	
 	if (my_id == 0) {
 		
-		emisorArchivo(6, "/local_home/jelberg.12/hola.txt");
-			
-	}
-	else if (my_id == 6) {
+		int i = 2; //Empieza en 3 porque el nodo 1 tiene ya lso archivos libro y diccionario, 
+		// Node 1 tiene el proceso 1 y 0 que es el coordinador		
 		
-		receptorArchivo(0, "/local_home/jelberg.12/hola.txt");
+		while (i < nproc){// Este while es para que mande el LIBRO a los procesos 
+			emisorArchivo(i, _libroTXT);
+			
+			i= i+2;//Porque 2 procesos comparten disco
+		}
+		// espues de mandar el libro genera archivos con la cantidad de palabras correspondientes por nodo
+		archivoPalabrasXnodo(nproc-1);
+	}
+	else if(my_id%2 == 0){ // Este if es especial solo para que reciban los procesos impares, ya que comparten disco con el anterior
+		//Procesos reciben el LIBRO
+		printf("Proceso que recibe archivo es %d\n",my_id);
+		receptorArchivo(0, _libroTXT);
 
 	}
 
@@ -293,12 +304,12 @@ int cantFilas(char nombre[50]){
 
 char* nombreArchivoNodo(int nodo){
 	char numNodo[2] = {0};
-	char* nombreArchNodo = malloc(35);
+	char* nombreArchNodo = malloc(60);
 	//transforma int a char
 	sprintf(numNodo,"%d",nodo);
 	
 	//crea el nombre del archivo para el nodo
-	strcpy(nombreArchNodo,"diccionario_palabras_nodo_");
+	strcpy(nombreArchNodo,"/local_home/jelberg.12/diccionario_palabras_nodo_");
 	strcat(nombreArchNodo,numNodo);
 	strcat(nombreArchNodo,".txt");
 	
@@ -308,12 +319,12 @@ char* nombreArchivoNodo(int nodo){
 void creaArchivoDiccionarioNombre(int nodo, char texto[500]){
 	FILE *archivo;
 	char numNodo[2] = {0};
-	char nombreArchNodo[50];
+	char nombreArchNodo[60];
   
     strcpy(nombreArchNodo,nombreArchivoNodo(nodo));
 	
 	archivo = fopen(nombreArchNodo,"a+");
-	
+	//printf("\n Abrio direccion del documento abierto es: %s \n\n",nombreArchNodo);
 	fputs(texto,archivo);
 	//Libera el espacio de memoria reservado para el nombre del achivo 
 	//free(nombreArchNodo);
@@ -325,6 +336,8 @@ void creaArchivoDiccionarioNombre(int nodo, char texto[500]){
 void archivoPalabrasXnodo(int cantNodos){
 	FILE *archivo;
 	char definicion[500]={0};
+	
+	printf("%s\n",_diccionario);
 	int totalPalabras = cantFilas(_diccionario)-1;
 	// Divide la cantidad de palabras totales en basse a la cantidad de nodos existentes
 	int cantidadParticular = totalPalabras/cantNodos + 1;
@@ -339,6 +352,7 @@ void archivoPalabrasXnodo(int cantNodos){
             printf("\nError de apertura del archivo. \n\n");
         }
         else{  
+	    	//printf("\n Abrio el diccionario \n\n");
             while(feof(archivo) == 0)
 	    	{		
 				// Obtiene toda la fila 
@@ -476,8 +490,9 @@ int cantidadCaracteres(char dir[]){
 	FILE *archivo ;	
 	char caracter;
 	int xi =0;
+
 	archivo = fopen(dir,"r");
-	
+	printf("DIRECCION %s\n", dir);
 	while(caracter=fgetc(archivo) != EOF) {
 		xi++;
 	}
@@ -494,17 +509,20 @@ void emisorArchivo(int nodo, char dir[]){
 	int i=0;
 	char caracter;
 	int tam = cantidadCaracteres(dir);
-	
+	printf("Cantidad de caracteres en el documento es : %d\n", tam);
     file = fopen(dir,"r");
+	printf("Inicio de proceso de emision de achivo al proceso %d\n",nodo);
 	
 	MPI_Send(&tam,1,MPI_INT,nodo,99,MPI_COMM_WORLD);
 	
 	while (i < tam){
 		caracter = fgetc(file);
+		
 		MPI_Send(&caracter,1,MPI_CHAR,nodo,99,MPI_COMM_WORLD);
+		//printf("Mando caracter : %c\n",caracter);
 		i++;
 	}
-	
+	printf("Fin de porceso de emision de achivo al proceso %d\n",nodo);
 	fclose(file);
 	
 }
@@ -519,12 +537,17 @@ void receptorArchivo(int nodo, char dir[]){
 	
 	file = fopen(dir,"a");
 	//Recibe la cantidad de caracteres que se van a copiar en el fichero a crear
+	printf("Inicio de porceso de RECEPCION de achivo que manda proceso %d\n",nodo);
 	MPI_Recv(&tam,1,MPI_INT,nodo,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
+	printf("DATO RECIBIO ES : %d\n", tam);
 	
 	while (i<tam){
-		MPI_Recv(&caracter,1,MPI_CHAR,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
+
+		MPI_Recv(&caracter,1,MPI_CHAR,nodo,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
+		//printf("RECIBO CARACTER: %c\n",caracter);
 		i++;
 		fputc(caracter,file);
 	}
+	printf("Fin de porceso de RECEPCION de achivo que manda proceso %d\n",nodo);
 	fclose(file);
 }
