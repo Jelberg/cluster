@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <mpi.h>
 
 //                             PARAMETROS FIjOS INICIAN CON "_"
 // Direccion del libro 
@@ -22,7 +23,7 @@
 
 		****************************************************************/
 
-//--------------METODOS COMUNES--------------
+//##################METODOS COMUNES--------------
 //Metodo ara convertir cadena de caracteres de mayusculas a minusculas
 char *strlwr(char *str);
 
@@ -35,12 +36,29 @@ void remonbraFichero(char nombreViejo[100], char nombreNuevo[100]);
 // Devuelve nombre de archivo para el diccionario particular de los nodos 
 char* nombreArchivoNodo(int nodo);
 
-char* transformaFicheroToChar(int tam);
-
 //-------------------------------------------		
 
 
-//------METODOS PARA GENERAR ARCHIVOS DE PALABRAS CONTABILIZADAS------------
+//###############METODOS USADOS PARA EL ENVIO Y RECEPCION DE ARCHIVOS----------
+
+//Metodo para saber la antidad de caracteres que posee el fichero dado
+int cantidadCaracteres(char dir[]);
+
+//Metodo para enviar archivos, mana caracter a caracter, se supone que es un metodo generalizado
+// nodo = emisor 
+// dir = direccion del archivo que se va a mandar 
+void emisorArchivo(int nodo, char dir[]);
+
+//Metodo para recepcion de archivos, funciona en conjunto con emisorArchivo(); Crea un archivo nuevo, dado una direccion
+//el cual se encarga de copiar caracter a caracter de los que manda el emisor
+// nodo = receptor, dir = direccion en donde se va a crear el archivo 
+void receptorArchivo(int nodo, char dir[]);
+
+//--------------------------------------------------------------------------
+
+
+//############METODOS PARA GENERAR ARCHIVOS DE PALABRAS CONTABILIZADAS------------
+
 //Metodo para obtener la palabra el diccionario y llama metodo cuentapalabras() para contabilizar de una vez
 //nodo = es el nodo que esta ejecutando la contabilizacion
 void obtinePalabraDiccionario(int nodo); //esta es la funcion principal	
@@ -62,7 +80,7 @@ void cuentaPalabras(char palabra[]);
  
  //------------------------------------------------------------------
  
-//---------------METODOS PARA DIVIDIR PALABRAS DEL DICCIONARIO PARA LOS NODOS---------USO PARA EL COORDINADOR------
+//##########   METODOS PARA DIVIDIR PALABRAS DEL DICCIONARIO PARA LOS NODOS---------USO PARA EL COORDINADOR------
 
 //devuelve un int con la cantidad de filas del archivo dado
 //IMPORTANTE : cuando llega al final del documento el asume el salto de linea hay que contabilizarlo
@@ -77,7 +95,7 @@ void creaArchivoDiccionarioNombre(int nodo, char texto[500]);
 
 //-------------------------------------------------------------------------------- 
  
-//---------------------METODO PARA SUSTIRUIR DEFINICIONES EN LIBRO -----------------
+//################  METODO PARA SUSTIRUIR DEFINICIONES EN LIBRO -----------------
 
 //Metodo compara palabra por palabra hasta conseguir la buscada y aniade definicion  
 void buscarPalabraLibro(char palabra[], char definicion[500],int row);
@@ -94,20 +112,30 @@ void sustituir(int nodo);//metdod principal
 
 		**************************************************************/
  
-void main(){
+void main(int argc, char** argv){
 	
 	//obtinePalabraDiccionario(1); // Contabiliza las palabras, lo ejecutan los demas nodos 
     //archivoPalabrasXnodo(6);  //Metodo independiente por que es el que activa el nodo coordinador el cual crea 6 archivos
 	//sustituir(1); //Antes de sustituir de debe ejecutar archivosPalabrasXnodo porque generan los diccionarios partidular y el cual ejecuta nodo 1 por qe es el parametro que se le pasa
+	MPI_Init(&argc, &argv);
 	
-	int cantidad = cantidadCaracteres();
+	int my_id;
+
+	MPI_Comm_rank(MPI_COMM_WORLD, &my_id);
 	
-	//char texto[cantidad];
-	
-	//texto = transformaFicheroToChar(cantidad);
-	
-	//printf("%d",cantidad);
-	generaArchivoFromChar(transformaFicheroToChar(cantidad),cantidad);
+	if (my_id == 0) {
+		
+		emisorArchivo(6, "/local_home/jelberg.12/hola.txt");
+			
+	}
+	else if (my_id == 6) {
+		
+		receptorArchivo(0, "/local_home/jelberg.12/hola.txt");
+
+	}
+
+MPI_Finalize();
+
 	
 }
 
@@ -443,40 +471,12 @@ void sustituir(int nodo){
 	fclose(archivo);	
 }
 
-int tamFichero(){
-	FILE *fich;
 
-  fich=fopen("/home/elberg/Escritorio/hola.txt","r");
-
-  fseek(fich, 0L, SEEK_END);
-
-  return ftell(fich);
-  fclose(fich);
-}
-
-
-
-//-------------------- PRUEBAA
-char* transformaFicheroToChar(int tam){
-	FILE *archivo ;	
-	char* caracter = malloc(tam);
-    //char* nombreArchNodo = malloc(35);
-	int xi =0;
-	archivo = fopen(_diccionarioParticular,"r");
-	
-	while(caracter[xi]=fgetc(archivo) != EOF) {
-		xi++;
-	}
-	fclose(archivo);
-	return caracter;
-	
-}
-
-int cantidadCaracteres(){
+int cantidadCaracteres(char dir[]){
 	FILE *archivo ;	
 	char caracter;
 	int xi =0;
-	archivo = fopen(_diccionarioParticular,"r");
+	archivo = fopen(dir,"r");
 	
 	while(caracter=fgetc(archivo) != EOF) {
 		xi++;
@@ -487,17 +487,44 @@ int cantidadCaracteres(){
 	
 }
 
-void generaArchivoFromChar(char texto[], int cantidadCaracteres){
-	FILE *archivo ;	
-	int i;
-	archivo = fopen("nuevo_libro.txt","a");
+//nodo= receptor
+//dir= nombre e la direccion del archivo
+void emisorArchivo(int nodo, char dir[]){
+	FILE *file;
+	int i=0;
+	char caracter;
+	int tam = cantidadCaracteres(dir);
 	
-	for (i=0 ; i < cantidadCaracteres ; i++){
-		fputc(texto[i],archivo);
+    file = fopen(dir,"r");
+	
+	MPI_Send(&tam,1,MPI_INT,nodo,99,MPI_COMM_WORLD);
+	
+	while (i < tam){
+		caracter = fgetc(file);
+		MPI_Send(&caracter,1,MPI_CHAR,nodo,99,MPI_COMM_WORLD);
+		i++;
 	}
 	
+	fclose(file);
 	
-	fclose(archivo);
 }
 
-
+//nodo = receptor , direccion donde va a crearse el archivo 
+void receptorArchivo(int nodo, char dir[]){
+	FILE *file;
+	char caracter;
+	int tam;
+	int i =0;
+	MPI_Status status;
+	
+	file = fopen(dir,"a");
+	//Recibe la cantidad de caracteres que se van a copiar en el fichero a crear
+	MPI_Recv(&tam,1,MPI_INT,nodo,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
+	
+	while (i<tam){
+		MPI_Recv(&caracter,1,MPI_CHAR,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
+		i++;
+		fputc(caracter,file);
+	}
+	fclose(file);
+}
