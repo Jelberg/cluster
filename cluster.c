@@ -40,10 +40,10 @@ void eliminaFichero(char dirArchivo[100]);
 void remonbraFichero(char nombreViejo[100], char nombreNuevo[100]);
 
 // Devuelve nombre de archivo para el diccionario particular de los nodos 
-char* nombreArchivoNodo(int nodo);
+//char* nombreArchivoNodo(int nodo);
 
 //Genera nombre de archivo de las palabras contabiliadas
-char* nombreArchivoCuentas(int nodo);
+//char* nombreArchivoCuentas(int nodo);
 
 //-------------------------------------------		
 
@@ -132,6 +132,8 @@ void main(int argc, char** argv){
 	MPI_Init(&argc, &argv);
 	
 	int my_id, nproc, i;
+	char numNodo[2] = {0};
+	char nombreArchNodo[60];
 
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_id);
 	MPI_Comm_size(MPI_COMM_WORLD, &nproc);
@@ -151,8 +153,15 @@ void main(int argc, char** argv){
 		archivoPalabrasXnodo(nproc-1);
 		
 		i = 2; //Tiene que empezar en 2 porque proceso 1 ya tiene su diccionario  
-		while (i < nproc){ // While para mandar DICCIONARIO partciculares 
-			emisorArchivo(i,nombreArchivoNodo(i));
+		while (i < nproc){ // While para mandar DICCIONARIO partciculares 	
+			//transforma int a char
+			sprintf(numNodo,"%d",i);
+			//crea el nombre del archivo para el nodo
+			strcpy(nombreArchNodo,_countWord);
+			strcat(nombreArchNodo,numNodo);
+			strcat(nombreArchNodo,".txt");
+			printf("ESTAAAAA ES LA DIRECCION 0 %s",nombreArchNodo);
+			emisorArchivo(i,nombreArchNodo);
 			//eliminaFichero(nombreArchivoNodo(i)); //Elimina el fichero que no es propio del nodo 1
 			i++; // Este si aumenta de 1 en 1 por que todos los procesos deberian de tener sus diccionarios
 		}
@@ -171,7 +180,14 @@ void main(int argc, char** argv){
 		
 		if (my_id != 1){ // Para RECIBIR DICCIONARIO particular
 			printf("Proceso que recibe archivo de Diccionario particula: %d\n",my_id);
-			receptorArchivo(0,nombreArchivoNodo(my_id));
+			
+			sprintf(numNodo,"%d",my_id);
+			//crea el nombre del archivo para el nodo
+			strcpy(nombreArchNodo,_countWord);
+			strcat(nombreArchNodo,numNodo);
+			strcat(nombreArchNodo,".txt");
+			printf("ESTAAAAA ES LA DIRECCION %s",nombreArchNodo);
+			receptorArchivo(0,nombreArchNodo);
 			obtinePalabraDiccionario(my_id);
 		}	
 		/*
@@ -202,9 +218,9 @@ MPI_Finalize();
 
 		***************************************************************/
 
-char* nombreArchivoNodo(int nodo){
+/*char* nombreArchivoNodo(int nodo){
 	char numNodo[2] = {0};
-	char* nombreArchNodo = malloc(60);
+	//char* nombreArchNodo = malloc(60);
 	//transforma int a char
 	sprintf(numNodo,"%d",nodo);
 	
@@ -218,7 +234,7 @@ char* nombreArchivoNodo(int nodo){
 
 char* nombreArchivoCuentas(int nodo){
 	char numNodo[2] = {0};
-	char* nombreArchNodo = malloc(60);
+	//char* nombreArchNodo = malloc(60);
 	//transforma int a char
 	sprintf(numNodo,"%d",nodo);
 	
@@ -228,7 +244,7 @@ char* nombreArchivoCuentas(int nodo){
 	strcat(nombreArchNodo,".txt");
 	
 	return nombreArchNodo;
-}
+}*/
 
 		
 char *strlwr(char *str){
@@ -265,8 +281,20 @@ void creaArchivoCantPalabras(char palabra[100], int cantidad, int nodo){
 	//Tamanio de la palabra por que es necesario para en strcpy y strcat
 	int tamanio  = strlen(palabra);
 	char dest[tamanio+7];
-	char* name[60];
-	name = nombreArchivoCuentas(nodo);
+	
+	//.............crear nombbre archivo ..............
+	char numNodo[2] = {0};
+	char nombreArchNodo[60];
+	//transforma int a char
+	sprintf(numNodo,"%d",nodo);
+	
+	//crea el nombre del archivo para el nodo
+	strcpy(nombreArchNodo,_countWord);
+	strcat(nombreArchNodo,numNodo);
+	strcat(nombreArchNodo,".txt");
+	//........................................
+	
+	
 	char scantidad[5];
 	//Transforma un int en un char y lo copia en la variable scantidad 
 	sprintf(scantidad,"%d",cantidad);
@@ -276,7 +304,7 @@ void creaArchivoCantPalabras(char palabra[100], int cantidad, int nodo){
 	strcat(dest,scantidad);
 	strcat(dest,"\n");
 	
- 	fp = fopen (name, "a+" );
+ 	fp = fopen (nombreArchNodo, "a+" );
 
  	fputs(dest,fp);
  	
@@ -347,13 +375,26 @@ void obtinePalabraDiccionario(int nodo){
 	char *caracter[60]={0};
 	char definicion[500]={0};
 	int cont =0;
-	char* name[60];
-	name = nombreArchivoNodo(nodo);
-	printf("\n  %s \n",name );
+	
+	//........para generar el nombre del archivo .......
+	
+	char numNodo[2] = {0};
+	char nombreArchNodo[60];
+	//transforma int a char
+	sprintf(numNodo,"%d",nodo);
+	
+	//crea el nombre del archivo para el nodo
+	strcpy(nombreArchNodo,_palabrasXproc);
+	strcat(nombreArchNodo,numNodo);
+	strcat(nombreArchNodo,".txt");
+	
+	//..................................................
+	
+	printf("\n  %s \n",nombreArchNodo );
 	printf("         Comienza a contabilizar palabras en proceso: %d \n",nodo);
-	int cantidad = cantFilas(name)-2;
+	int cantidad = cantFilas(nombreArchNodo)-2;
 	printf("         Cantidad de filas del diccionario de proceso %d es: %d \n",nodo,cantidad);
-	archivo = fopen(name,"r");
+	archivo = fopen(nombreArchNodo,"r");
 	
 	
 	//int cantidad = cantFilas(_diccionarioParticular)-2;
@@ -386,11 +427,20 @@ void obtinePalabraDiccionario(int nodo){
 
 void creaArchivoDiccionarioNombre(int nodo, char texto[500]){
 	FILE *archivo;
+    
+	//........para generar el nombre del archivo .......
+	
 	char numNodo[2] = {0};
 	char nombreArchNodo[60];
-    char* name[60];
-	name =nombreArchivoNodo(nodo);
-    strcpy(nombreArchNodo,name );
+	//transforma int a char
+	sprintf(numNodo,"%d",nodo);
+	
+	//crea el nombre del archivo para el nodo
+	strcpy(nombreArchNodo,_palabrasXproc);
+	strcat(nombreArchNodo,numNodo);
+	strcat(nombreArchNodo,".txt");
+	
+	//..................................................
 	
 	archivo = fopen(nombreArchNodo,"a+");
 	//printf("\n Abrio direccion del documento abierto es: %s \n\n",nombreArchNodo);
@@ -521,12 +571,25 @@ void sustituir(int nodo){
 	char *caracter[20]={0};
 	char definicion[500]={0};
 	int cont=0;
-	char* name = malloc(60);
-	name = nombreArchivoNodo(nodo);
-	int cantidad = cantFilas(name)-1;
+	
+	//........para generar el nombre del archivo .......
+	
+	char numNodo[2] = {0};
+	char nombreArchNodo[60];
+	//transforma int a char
+	sprintf(numNodo,"%d",nodo);
+	
+	//crea el nombre del archivo para el nodo
+	strcpy(nombreArchNodo,_palabrasXproc);
+	strcat(nombreArchNodo,numNodo);
+	strcat(nombreArchNodo,".txt");
+	
+	//..................................................
+	
+	int cantidad = cantFilas(nombreArchNodo)-1;
 	
 	//Diireccion del diccionario particular
-	archivo = fopen(name,"r");
+	archivo = fopen(nombreArchNodo,"r");
 
 	
 	//int cantidad = cantFilas("Palabras_Grupo02.txt")-2;
