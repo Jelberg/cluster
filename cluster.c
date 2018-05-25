@@ -157,10 +157,10 @@ void main(int argc, char** argv){
 			//transforma int a char
 			sprintf(numNodo,"%d",i);
 			//crea el nombre del archivo para el nodo
-			strcpy(nombreArchNodo,_countWord);
+			strcpy(nombreArchNodo,_palabrasXproc);
 			strcat(nombreArchNodo,numNodo);
 			strcat(nombreArchNodo,".txt");
-			printf("ESTAAAAA ES LA DIRECCION 0 %s",nombreArchNodo);
+			printf("ESTAAAAA ES LA DIRECCION 0 %s\n",nombreArchNodo);
 			emisorArchivo(i,nombreArchNodo);
 			//eliminaFichero(nombreArchivoNodo(i)); //Elimina el fichero que no es propio del nodo 1
 			i++; // Este si aumenta de 1 en 1 por que todos los procesos deberian de tener sus diccionarios
@@ -183,10 +183,10 @@ void main(int argc, char** argv){
 			
 			sprintf(numNodo,"%d",my_id);
 			//crea el nombre del archivo para el nodo
-			strcpy(nombreArchNodo,_countWord);
+			strcpy(nombreArchNodo,_palabrasXproc);
 			strcat(nombreArchNodo,numNodo);
 			strcat(nombreArchNodo,".txt");
-			printf("ESTAAAAA ES LA DIRECCION %s",nombreArchNodo);
+			printf("************ESTAAAAA ES LA DIRECCION %s\n",nombreArchNodo);
 			receptorArchivo(0,nombreArchNodo);
 			obtinePalabraDiccionario(my_id);
 		}	
