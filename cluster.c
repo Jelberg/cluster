@@ -160,13 +160,14 @@ void main(int argc, char** argv){
 			strcpy(nombreArchNodo,_palabrasXproc);
 			strcat(nombreArchNodo,numNodo);
 			strcat(nombreArchNodo,".txt");
-			printf("ESTAAAAA ES LA DIRECCION 0 %s\n",nombreArchNodo);
+
 			emisorArchivo(i,nombreArchNodo);
 			//eliminaFichero(nombreArchivoNodo(i)); //Elimina el fichero que no es propio del nodo 1
 			i++; // Este si aumenta de 1 en 1 por que todos los procesos deberian de tener sus diccionarios
 		}
 		
-		obtinePalabraDiccionario(1); //Una vez mandado los palabras puede empezar a contabilizar
+		
+		//obtinePalabraDiccionario(1); //Una vez mandado los palabras puede empezar a contabilizar
 		
 		//receptorArchivoCoordinador(_cuentas);// Recibe de cualquier proceso 
 	}
@@ -186,7 +187,6 @@ void main(int argc, char** argv){
 			strcpy(nombreArchNodo,_palabrasXproc);
 			strcat(nombreArchNodo,numNodo);
 			strcat(nombreArchNodo,".txt");
-			printf("************ESTAAAAA ES LA DIRECCION %s\n",nombreArchNodo);
 			receptorArchivo(0,nombreArchNodo);
 			obtinePalabraDiccionario(my_id);
 		}	
@@ -387,7 +387,7 @@ void obtinePalabraDiccionario(int nodo){
 	strcpy(nombreArchNodo,_palabrasXproc);
 	strcat(nombreArchNodo,numNodo);
 	strcat(nombreArchNodo,".txt");
-	
+	printf("Direecion del archivo diccionario a abrir: %s\n",nombreArchNodo);
 	//..................................................
 	
 	printf("\n  %s \n",nombreArchNodo );
@@ -395,7 +395,7 @@ void obtinePalabraDiccionario(int nodo){
 	int cantidad = cantFilas(nombreArchNodo)-2;
 	printf("         Cantidad de filas del diccionario de proceso %d es: %d \n",nodo,cantidad);
 	archivo = fopen(nombreArchNodo,"r");
-	
+	printf("ERROR %s\n");
 	
 	//int cantidad = cantFilas(_diccionarioParticular)-2;
 	//archivo = fopen(_diccionarioParticular,"r");
@@ -625,7 +625,7 @@ int cantidadCaracteres(char dir[300]){
 	int xi =0;
 
 	archivo = fopen(dir,"r");
-	printf("DIRECCION %s\n", dir);
+	//printf("DIRECCION %s\n", dir);
 	while(caracter=fgetc(archivo) != EOF) {
 		xi++;
 	}
@@ -642,7 +642,7 @@ void emisorArchivo(int nodo, char dir[300]){
 	int i=0;
 	char caracter;
 	int tam = cantidadCaracteres(dir);
-	printf("Cantidad de caracteres en el documento es : %d\n", tam);
+	//printf("Cantidad de caracteres en el documento es : %d\n", tam);
     file = fopen(dir,"r");
 	
 	MPI_Send(&tam,1,MPI_INT,nodo,99,MPI_COMM_WORLD);
@@ -670,7 +670,7 @@ void receptorArchivo(int nodo, char dir[300]){
 	file = fopen(dir,"a");
 	//Recibe la cantidad de caracteres que se van a copiar en el fichero a crear
 	MPI_Recv(&tam,1,MPI_INT,nodo,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
-	printf("DATO RECIBIO ES : %d\n", tam);
+	//printf("DATO RECIBIO ES : %d\n", tam);
 	
 	while (i<tam){
 
@@ -693,7 +693,7 @@ void receptorArchivoCoordinador(char dir[300]){
 	file = fopen(dir,"a");
 	//Recibe la cantidad de caracteres que se van a copiar en el fichero a crear
 	MPI_Recv(&tam,1,MPI_INT,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
-	printf("DATO RECIBIO ES : %d\n", tam);
+	//printf("DATO RECIBIO ES : %d\n", tam);
 	
 	while (i<tam){
 
