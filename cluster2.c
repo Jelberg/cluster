@@ -27,15 +27,19 @@
 		****************************************************************/
 int cantFilas(char nombre[50]);
 
+//-----------------ENVIA ARCHIVO ----------------
 int cantidadCaracteres(char dir[]);
 void emisorArchivo(int nodo, char dir[]);
 void receptorArchivo(int nodo, char dir[]);
+//-----------------------------------------------
 
+//---------------CUENTA PALABRAS ---------------------------
 int loencontre(int pos, int tp, char texto[500], char palabra[60]);
 void creaArchivoCantPalabras(char palabra[60], int cantidad, int nodo);
 void cuentaPalabras(char palabra[60], int nodo);
 void obtinePalabraDiccionario(int nodo);//metodo principal
-		
+//------------------------------------------------------------
+
 		/*************************************************************
 
 							        MAIN
