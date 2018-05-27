@@ -5,8 +5,12 @@
 #include <mpi.h>
 
 //                             PARAMETROS FIjOS INICIAN CON "_"
-//
+
+//Direccion de las palabras contabilizadas 
 #define _archivoXproc "/local_home/jelberg.12/diccionario_palabras_proc_"
+
+//Direccion del archivo de las palabras TOTALES contailizadas
+#define _total "/local_home/jelberg.12/CONTADOS.txt"
 
 // Direccion del libro 
 #define _libroTXT "/local_home/jelberg.12/libro_medicina.txt"
@@ -29,8 +33,9 @@ int cantFilas(char nombre[50]);
 
 //-----------------ENVIA ARCHIVO ----------------
 int cantidadCaracteres(char dir[]);
-void emisorArchivo(int nodo, char dir[]);
-void receptorArchivo(int nodo, char dir[]);
+void emisorArchivo(int nodo, char dir[]);//nodo = a quien se va a mandar ; dir = ireccion donde se encuentar el archivo
+void receptorArchivo(int nodo, char dir[]);//nodo = de quien recibe los datos ; dir= donde se va a guardar el archivo
+void receptorArchivoCoordinador(char dir[]);// dir = donde se va a guardar el archivo
 //-----------------------------------------------
 
 //---------------CUENTA PALABRAS ---------------------------
@@ -39,6 +44,8 @@ void creaArchivoCantPalabras(char palabra[60], int cantidad, int nodo);
 void cuentaPalabras(char palabra[60], int nodo);
 void obtinePalabraDiccionario(int nodo);//metodo principal
 //------------------------------------------------------------
+
+void archivoTotalCuentas();
 
 		/*************************************************************
 
@@ -54,17 +61,31 @@ void main(int argc, char** argv){
 	int my_id, nproc,i;
     char numNodo[2] = {0};
 	char nombreArchNodo[60];
+	char nombreArch[60];
 
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_id);
 	MPI_Comm_size(MPI_COMM_WORLD, &nproc);
 	
 	if (my_id == 0) {
 		obtinePalabraDiccionario(1);// cuenta palabras
+		//archivoTotalCuentas();
+		i =2;
+		while (i < nproc){
+		receptorArchivo(i,_total);
+		i++;
+		}
 	}
 	
 	else{
 		if (my_id != 1){ // para recibir palabras  particulares
-			obtinePalabraDiccionario(my_id); //cuenta las palabras 
+		   	obtinePalabraDiccionario(my_id); //cuenta las palabras 
+
+			sprintf(numNodo,"%d",my_id); //trasnforma int  a char 
+			strcpy(nombreArch,_countWord);
+			strcat(nombreArch,numNodo);
+			strcat(nombreArch,".txt"); //genera el nombre del archivo 
+			
+			emisorArchivo(0, nombreArch);
 		}
 	}
 	
@@ -146,7 +167,7 @@ void emisorArchivo(int nodo, char dir[]){
 	
 }
 
-//nodo = receptor , direccion donde va a crearse el archivo 
+//nodo = emisor , direccion donde va a crearse el archivo 
 void receptorArchivo(int nodo, char dir[]){
 	FILE *file;
 	char caracter;
@@ -168,6 +189,31 @@ void receptorArchivo(int nodo, char dir[]){
 		fputc(caracter,file);
 	}
 	printf("Fin de porceso de RECEPCION de achivo que manda proceso %d\n",nodo);
+	fclose(file);
+}
+
+// este es especial para el coordinador ya que puede recibir de cuelquier proceso
+void receptorArchivoCoordinador(char dir[]){
+	FILE *file;
+	char caracter;
+	int tam;
+	int i =0;
+	MPI_Status status;
+	
+	file = fopen(dir,"a");
+	//Recibe la cantidad de caracteres que se van a copiar en el fichero a crear
+	printf("Inicio de porceso de RECEPCION de achivo para nodo0\n");
+	MPI_Recv(&tam,1,MPI_INT,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
+	printf("DATO RECIBIO ES : %d\n", tam);
+	
+	while (i<tam){
+
+		MPI_Recv(&caracter,1,MPI_CHAR,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
+		//printf("RECIBO CARACTER: %c\n",caracter);
+		i++;
+		fputc(caracter,file);
+	}
+	printf("Fin de porceso de RECEPCION de achivo PARA NODO0\n");
 	fclose(file);
 }
 
@@ -284,7 +330,7 @@ void obtinePalabraDiccionario(int nodo){
 	strcat(nombreArchNodo,numNodo);
 	strcat(nombreArchNodo,".txt"); //genera el nombre del archivo 
 	
-	int cantidad = cantFilas( nombreArchNodo)-1;
+	int cantidad = cantFilas( nombreArchNodo);
 	archivo = fopen(nombreArchNodo,"r");
 	
 	
@@ -311,4 +357,31 @@ void obtinePalabraDiccionario(int nodo){
 }
 
 
-//--------------------------------------------------------------------------------------		
+//--------------------------------------------------------------------------------------	
+
+
+//------------------------------genera archivo total de cuentas solo para proceso 1--------------------
+
+void archivoTotalCuentas(){
+	FILE *archivo, *final;
+	char texto[200];
+	
+	char numNodo[2] = {0};
+	char nombreArch[60];
+	sprintf(numNodo,"%d",1); //trasnforma int  a char 
+	strcpy(nombreArch,_countWord);
+	strcat(nombreArch,numNodo);
+	strcat(nombreArch,".txt"); //genera el nombre del archivo
+	
+	archivo = fopen(nombreArch,"r");
+	final = fopen(_total,"a");
+	
+	while (fgets(texto,200,archivo) != NULL){
+		fputs(texto,final);
+	}
+	
+	fclose(archivo);
+	fclose(final);
+}
+
+//-----------------------------------------------------------------------------------------------------	

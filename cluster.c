@@ -36,8 +36,6 @@ void eliminaFichero(char dirArchivo[100]);
 //Metodo para renombrar ficheros
 void remonbraFichero(char nombreViejo[100], char nombreNuevo[100]);
 
-// Devuelve nombre de archivo para el diccionario particular de los nodos 
-//char* nombreArchivoNodo(int nodo);
 
 //-------------------------------------------		
 
@@ -247,9 +245,10 @@ void archivoPalabrasXnodo(int cantNodos){
 	FILE *archivo;
 	char definicion[500]={0};
 	
-	int totalPalabras = cantFilas(_diccionario)-1;
+	int totalPalabras = cantFilas(_diccionario);
 	// Divide la cantidad de palabras totales en basse a la cantidad de nodos existentes
 	int cantidadParticular = totalPalabras/cantNodos + 1;
+	printf("CANTIDAD DE PALABRAS POR CADA NODO: %d\n",cantidadParticular);
 	// variable usada para llevar cuenta de la cantidad de palabras que se han aniadido al dicionario particular del nodo
 	int sumPalabras =0;
 	// variable usada para saber a que nodo se le estan asignado la lista e palabras 
