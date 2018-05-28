@@ -58,7 +58,7 @@ void main(int argc, char** argv){
 	
 	MPI_Init(&argc, &argv);
 	
-	int my_id, nproc,i;
+	int my_id, nproc,i,j,k;
     char numNodo[2] = {0};
 	char nombreArchNodo[60];
 	char nombreArch[60];
@@ -87,6 +87,24 @@ void main(int argc, char** argv){
 			
 			emisorArchivo(0, nombreArch);
 		}
+		
+		k = -1;
+		j = 1;
+		while(0==0){// Siguiente while es para simular el compartamiento de un anillo
+			
+			if (j == my_id){
+				k = j+1;
+				emisorArchivo();
+				j++;
+			}
+			if(k==my_id){
+				receptorArchivo();
+				k=-1;
+			}
+			
+			if (j == nproc) break; // if quiere dir que ya recorrio todo el anillo
+		}
+		
 	}
 	
 	MPI_Finalize();
