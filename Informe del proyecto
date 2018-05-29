@@ -1,0 +1,5 @@
+1. Los últimos merge sort sobre los temporales ¿Se podrían hacer más eficientemente en el coordinador con hilos? ¿Por qué?
+2. ¿Tuvo trozos de código con regiones críticas? ¿Por qué?
+3. ¿Es importante para este problema la sincronización de relojes? ¿Por qué?
+4. Debe haber una tabla de tiempos para analizar las corridas con 20 y 10 nodos de ejecución para poder comentar los resultados.
+5. Se darán puntos extra si separan cada corrida equitativamente en nodos PentiumD y en nodos PentiumIV y comentan esos resultados en el análisis de desempeño.
