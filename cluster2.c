@@ -15,6 +15,9 @@
 // Direccion del libro 
 #define _libroTXT "/local_home/jelberg.12/libro_medicina.txt"
 
+// Direccion del libro MODIFICADO 
+#define _MODIFICADO "/local_home/jelberg.12/libro_medicina_MODIFICADO.txt"
+
 // Direccion archivo generado con cuentas de palabras
 #define _countWord "/local_home/jelberg.12/palabras_contabilizadas_"
 
@@ -30,10 +33,11 @@
 
 		****************************************************************/
 int cantFilas(char nombre[50]);
+void eliminaFichero(char dirArchivo[100]);
 
 //-----------------ENVIA ARCHIVO ----------------
 int cantidadCaracteres(char dir[]);
-void emisorArchivo(int nodo, char dir[]);//nodo = a quien se va a mandar ; dir = ireccion donde se encuentar el archivo
+void emisorArchivo(int nodo, char dir[]);//nodo = a quien se va a mandar ; dir = direccion donde se encuentar el archivo
 void receptorArchivo(int nodo, char dir[]);//nodo = de quien recibe los datos ; dir= donde se va a guardar el archivo
 void receptorArchivoCoordinador(char dir[]);// dir = donde se va a guardar el archivo
 //-----------------------------------------------
@@ -46,6 +50,11 @@ void obtinePalabraDiccionario(int nodo);//metodo principal
 //------------------------------------------------------------
 
 void archivoTotalCuentas();
+
+//----------------SUSTITUIR---------------------------------------------
+void sustituir(int nodo);
+void buscarPalabraLibro(char palabra[], char definicion[500], int row);
+//----------------------------------------------------------------------
 
 		/*************************************************************
 
@@ -85,26 +94,63 @@ void main(int argc, char** argv){
 			strcat(nombreArch,numNodo);
 			strcat(nombreArch,".txt"); //genera el nombre del archivo 
 			
+			//eliminaFichero(_libroTXT);
+			
 			emisorArchivo(0, nombreArch);
 		}
 		
-		k = -1;
-		j = 1;
-		while(0==0){// Siguiente while es para simular el compartamiento de un anillo
-			
-			if (j == my_id){
-				k = j+1;
-				emisorArchivo();
-				j++;
+		//-----------------------------FASE 2---------------------------------------
+	/*	printf("*******INICIA FASE 2*******");
+		int token=1;
+		if (my_id != 0){
+			int next = (my_id+1)%nproc;
+			int from = (my_id+nproc-1)%nproc;
+		while(0 == 0){// Siguiente while es para simular el compartamiento de un anillo
+	       
+			if (token == my_id){
+				
+				token++;// TOKEN es para saber quien le toca mandar el proceso 
+				
+				printf("Mandando el token a my_id %d \n",next);
+				
+				MPI_Send(&token,1,MPI_INT,next,99,MPI_COMM_WORLD);
+				
+				if ((my_id%2 != 0)||(my_id== nproc-1)){ //procesos impares so los que mandan y el libro y el ultimo proceso tambien inependientemente de si es par o no
+				
+					printf("Proceso %d manda a proceso %d EL LIBRO\n",my_id,next);
+					
+					emisorArchivo(next,_libroTXT);
+				}
 			}
-			if(k==my_id){
-				receptorArchivo();
-				k=-1;
+			
+			else {
+				
+				MPI_Recv(&token,1,MPI_INT,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
+				
+				printf("Recibo el token que tiene valor: %d\n",token); 
+				
+				if (my_id%2 == 0){//procesos parea son los unicos en recibir el libro 
+					
+					receptorArchivo(from,_libroTXT);
+					
+					printf("	YO proceso %d recibo libro para modificar\n",my_id);
+				}
+				printf("====Sustituye proceso %d ====\n",my_i);
+				sustituir(my_id);// independientemete de quien reciba el libro todos sustituyen, impares no tendran problema
 			}
 			
-			if (j == nproc) break; // if quiere dir que ya recorrio todo el anillo
+			if (token > my_id ) break;
+		}//fin del while 
+		printf("SALIO proceso :%d \n",my_id);
+	}		
+		else {// para que reciba el proceso 0 el libro del ultimo que lo mando 
+			
+			MPI_Send(&token,1,MPI_INT,next,99,MPI_COMM_WORLD);
+			
+			receptorArchivo(from,_MODIFICADO);
 		}
-		
+		//---------------------------------fin FASE 2----------------------------------------
+		*/
 	}
 	
 	MPI_Finalize();
@@ -139,7 +185,12 @@ void main(int argc, char** argv){
 	return cont;	
 }
 
-
+void eliminaFichero(char dirArchivo[100]){
+	
+	if(remove(dirArchivo)!=0) // Eliminamos el archivo
+	printf("No se pudo eliminar el archivo\n");
+        
+}
 
 
 //------------------------------envia archivos----------------------------------

@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-#SBATCH --job-name=cluster_run
-#SBATCH --output=cluster_run.%j.out
+#SBATCH --job-name=cluster2_run
+#SBATCH --output=cluster2_run.%j.out
 #SBATCH --ntasks=11
 #
 

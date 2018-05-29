@@ -1,0 +1,33 @@
+----------INICIO PROCESO----------
+[prun] Master compute host = beehive-node1
+[prun] Resource manager = slurm
+[prun] Launch cmd = mpirun ./run2 (family=openmpi)
+Inicio de porceso de RECEPCION de achivo que manda proceso 2
+Cantidad de caracteres en el documento es : 2861
+Inicio de proceso de emision de achivo al proceso 0
+Fin de porceso de emision de achivo al proceso 0
+Cantidad de caracteres en el documento es : 2932
+Inicio de proceso de emision de achivo al proceso 0
+Fin de porceso de emision de achivo al proceso 0
+Cantidad de caracteres en el documento es : 3060
+Inicio de proceso de emision de achivo al proceso 0
+Fin de porceso de emision de achivo al proceso 0
+Cantidad de caracteres en el documento es : 3183
+Inicio de proceso de emision de achivo al proceso 0
+DATO RECIBIO ES : 3183
+Fin de porceso de RECEPCION de achivo que manda proceso 2
+Fin de porceso de emision de achivo al proceso 0
+Inicio de porceso de RECEPCION de achivo que manda proceso 3
+DATO RECIBIO ES : 3060
+Fin de porceso de RECEPCION de achivo que manda proceso 3
+Inicio de porceso de RECEPCION de achivo que manda proceso 4
+DATO RECIBIO ES : 2861
+Fin de porceso de RECEPCION de achivo que manda proceso 4
+Inicio de porceso de RECEPCION de achivo que manda proceso 5
+DATO RECIBIO ES : 2932
+Fin de porceso de RECEPCION de achivo que manda proceso 5
+
+real	4m25.066s
+user	3m35.524s
+sys	1m15.584s
+-----------FIN PROCESO-----------
