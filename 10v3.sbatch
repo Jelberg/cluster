@@ -5,8 +5,14 @@
 #SBATCH --ntasks=6
 #
 
-echo "----------INICIO PROCESO----------"
 pdsh -w node[2-12] rm /local_home/jelberg.12/libro_medicina.txt
 
+echo "----------INICIO PROCESO----------"
+
+
 time prun ./run3
+
+
 echo "-----------FIN PROCESO-----------"
+
+pdsh -w node[2-12] rm /local_home/jelberg.12/*.txt

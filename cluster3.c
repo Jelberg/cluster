@@ -4,6 +4,13 @@
 #include <ctype.h>
 #include <mpi.h>
 
+/*******************************************
+
+PROGRAMA PARA SUSTITUIR LAS PALABRAS PARTICULARES DE LOS NODOS EN EL LIBRO, LA COMUNICACION ES EN FORMA DE ANILLO SECUENCIAL
+
+*******************************************/
+
+
 #define _archivoXproc "/local_home/jelberg.12/diccionario_palabras_proc_"
 
 // Direccion del libro 
@@ -66,6 +73,12 @@ void main(int argc, char** argv){
 	
 		int next = (my_id+1)%nproc;
 		int from = (my_id+nproc-1)%nproc;
+		
+		if (my_id ==1 ){
+			sustituir(my_id);
+		}
+		
+		MPI_Barrier(MPI_COMM_WORLD); // hasta que no termine el proceso 1 de sustituir no manda el libro
 		
 		if (my_id != 0){
 			

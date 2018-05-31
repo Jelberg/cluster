@@ -3,6 +3,12 @@
 #include <string.h>
 #include <ctype.h>
 #include <mpi.h>
+/*********************************
+
+PROGRAMA PARA CONTABILIZAR LAS PALABRAS
+
+*********************************/
+
 
 //                             PARAMETROS FIjOS INICIAN CON "_"
 
@@ -51,10 +57,6 @@ void obtinePalabraDiccionario(int nodo);//metodo principal
 
 void archivoTotalCuentas();
 
-//----------------SUSTITUIR---------------------------------------------
-void sustituir(int nodo);
-void buscarPalabraLibro(char palabra[], char definicion[500], int row);
-//----------------------------------------------------------------------
 
 		/*************************************************************
 
@@ -68,6 +70,7 @@ void main(int argc, char** argv){
 	MPI_Init(&argc, &argv);
 	
 	int my_id, nproc,i,j,k;
+	double tiempo_inicial, tiempo_final;
     char numNodo[2] = {0};
 	char nombreArchNodo[60];
 	char nombreArch[60];
@@ -75,82 +78,13 @@ void main(int argc, char** argv){
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_id);
 	MPI_Comm_size(MPI_COMM_WORLD, &nproc);
 	
-	if (my_id == 0) {
-		obtinePalabraDiccionario(1);// cuenta palabras
+	if (my_id != 0) {
+		tiempo_inicial = MPI_Wtime();
+		printf("INICIA PROCESO DE CONTEO para nodo %d\n", my_id);
+		obtinePalabraDiccionario(my_id);// cuenta palabras
+		tiempo_final = MPI_Wtime();
+		printf("FINALIZA PROCESO DE CONTEO para nodo %d Y TARDA %f seg\n", my_id,tiempo_final);
 		//archivoTotalCuentas();
-		i =2;
-		while (i < nproc){
-		receptorArchivo(i,_total);
-		i++;
-		}
-	}
-	
-	else{
-		if (my_id != 1){ // para recibir palabras  particulares
-		   	obtinePalabraDiccionario(my_id); //cuenta las palabras 
-
-			sprintf(numNodo,"%d",my_id); //trasnforma int  a char 
-			strcpy(nombreArch,_countWord);
-			strcat(nombreArch,numNodo);
-			strcat(nombreArch,".txt"); //genera el nombre del archivo 
-			
-			//eliminaFichero(_libroTXT);
-			
-			emisorArchivo(0, nombreArch);
-		}
-		
-		//-----------------------------FASE 2---------------------------------------
-	/*	printf("*******INICIA FASE 2*******");
-		int token=1;
-		if (my_id != 0){
-			int next = (my_id+1)%nproc;
-			int from = (my_id+nproc-1)%nproc;
-		while(0 == 0){// Siguiente while es para simular el compartamiento de un anillo
-	       
-			if (token == my_id){
-				
-				token++;// TOKEN es para saber quien le toca mandar el proceso 
-				
-				printf("Mandando el token a my_id %d \n",next);
-				
-				MPI_Send(&token,1,MPI_INT,next,99,MPI_COMM_WORLD);
-				
-				if ((my_id%2 != 0)||(my_id== nproc-1)){ //procesos impares so los que mandan y el libro y el ultimo proceso tambien inependientemente de si es par o no
-				
-					printf("Proceso %d manda a proceso %d EL LIBRO\n",my_id,next);
-					
-					emisorArchivo(next,_libroTXT);
-				}
-			}
-			
-			else {
-				
-				MPI_Recv(&token,1,MPI_INT,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
-				
-				printf("Recibo el token que tiene valor: %d\n",token); 
-				
-				if (my_id%2 == 0){//procesos parea son los unicos en recibir el libro 
-					
-					receptorArchivo(from,_libroTXT);
-					
-					printf("	YO proceso %d recibo libro para modificar\n",my_id);
-				}
-				printf("====Sustituye proceso %d ====\n",my_i);
-				sustituir(my_id);// independientemete de quien reciba el libro todos sustituyen, impares no tendran problema
-			}
-			
-			if (token > my_id ) break;
-		}//fin del while 
-		printf("SALIO proceso :%d \n",my_id);
-	}		
-		else {// para que reciba el proceso 0 el libro del ultimo que lo mando 
-			
-			MPI_Send(&token,1,MPI_INT,next,99,MPI_COMM_WORLD);
-			
-			receptorArchivo(from,_MODIFICADO);
-		}
-		//---------------------------------fin FASE 2----------------------------------------
-		*/
 	}
 	
 	MPI_Finalize();
@@ -398,6 +332,7 @@ void obtinePalabraDiccionario(int nodo){
 	strcpy(nombreArchNodo,_archivoXproc);
 	strcat(nombreArchNodo,numNodo);
 	strcat(nombreArchNodo,".txt"); //genera el nombre del archivo 
+	printf("%s\n",nombreArchNodo);
 	
 	int cantidad = cantFilas( nombreArchNodo);
 	archivo = fopen(nombreArchNodo,"r");

@@ -3,6 +3,12 @@
 #include <string.h>
 #include <ctype.h>
 #include <mpi.h>
+/***************************
+
+PROGRAMA QUE MANDA A LOS NODOS LOS LIBROS Y LAS PALABRAS PARTICULARES
+
+****************************/
+
 
 //                             PARAMETROS FIjOS INICIAN CON "_"
 //
@@ -27,8 +33,6 @@
 		****************************************************************/
 
 //##################METODOS COMUNES--------------
-//Metodo ara convertir cadena de caracteres de mayusculas a minusculas
-char *strlwr(char *str);
 
 //Elimina ficheros con la direccion dada
 void eliminaFichero(char dirArchivo[100]);
@@ -72,17 +76,6 @@ void creaArchivoDiccionarioNombre(int nodo, char texto[500]);
 
 //-------------------------------------------------------------------------------- 
  
-//################  METODO PARA SUSTIRUIR DEFINICIONES EN LIBRO -----------------
-
-//Metodo compara palabra por palabra hasta conseguir la buscada y aniade definicion  
-void buscarPalabraLibro(char palabra[], char definicion[500],int row);
-
-//Metedo que saca palabra y definicion del diccionario particular para mandarlo al metodo buscaPalabraLibro()
-// nodo = es el numero de nodo que va a ejecutarla sustitucion 
-void sustituir(int nodo);//metdod principal 
-
-//--------------------------------------------------------------------------------------
- 
 		/*************************************************************
 
 							        MAIN
@@ -97,6 +90,7 @@ void main(int argc, char** argv){
 	MPI_Init(&argc, &argv);
 	
 	int my_id, nproc,i;
+	double tiempo_inicial, tiempo_final;
     char numNodo[2] = {0};
 	char nombreArchNodo[60];
 
@@ -109,17 +103,31 @@ void main(int argc, char** argv){
 		int i = 2; //Empieza en 3 porque el nodo 1 tiene ya lso archivos libro y diccionario, 
 		// Node 1 tiene el proceso 1 y 0 que es el coordinador		
 		printf("**************INICIA ENVIO DE LIBRO *****************\n");
+		tiempo_inicial = MPI_Wtime();
+		
 		while (i < nproc){// Este while es para que mande el LIBRO a los procesos 
 			emisorArchivo(i, _libroTXT);
 			
 			i= i+2;//Porque 2 procesos comparten disco
 		}
+		tiempo_final = MPI_Wtime();
+		printf("\n\nTARDA EN MANDAR EL LIBRO A LOS NODOS %f seg\n\n",tiempo_final);
+		
 		// espues de mandar el libro genera archivos con la cantidad de palabras correspondientes por nodo
+		tiempo_inicial = MPI_Wtime();
+		
 		archivoPalabrasXnodo(nproc-1);
+		
+		tiempo_final = MPI_Wtime();
+		printf("\n\nTARDA EN generar el archivo de palabras particulares %f seg\n\n",tiempo_final);
+		
 		printf("**************finaliza ENVIO DE LIBRO *****************\n");
 		
 		printf("**************INICIA ENVIO DE PALABRAS *****************\n");
 		i=2;
+		
+		tiempo_inicial = MPI_Wtime();
+		
 		while (i < nproc){ // para enviar palabras pariculares
 		
 			sprintf(numNodo,"%d",i); //trasnforma int  a char 
@@ -131,6 +139,10 @@ void main(int argc, char** argv){
 			
 			i++;
 		}
+		
+		tiempo_final = MPI_Wtime();
+		printf("\n\nTARDA EN ENVIAR el archivo de palabras particulares %f seg\n\n",tiempo_final);
+		
 		printf("**************finaliza ENVIO DE PALABRAS *****************\n");
 		
 	}
@@ -165,17 +177,6 @@ MPI_Finalize();
 			                FUNCIONES Y PROCEDIMIENTOS
 
 		***************************************************************/
-		
-char *strlwr(char *str){
-  unsigned char *p = (unsigned char *)str;
-
-  while (*p) {
-     *p = tolower((unsigned char)*p);
-      p++;
-  }
-
-  return str;
-}		
 
 void eliminaFichero(char dirArchivo[100]){
 	
@@ -279,115 +280,6 @@ void archivoPalabrasXnodo(int cantNodos){
 	fclose(archivo);
 }
 //---------------------------------------------------------------------------------------------------
-
-
-
-
-//--------------------------------------sustituir---------------------------------------------------
-
-void buscarPalabraLibro(char palabra[], char definicion[500], int row){
-	FILE *archivo ;	
-	char fila[500]={0};
-	char aux[20];
-	int tamPalbra=0;
-	int tamFila =0;
-	int i;
-	int seguir=0;
-	int cont =0;
-	int auxtam, xi,j;
-	
- 	// Direccion del libro 
- 	archivo = fopen(_libroTXT,"rw+");
-    int cantidad = cantFilas(_libroTXT)-1;
-	 
- 	if (archivo == NULL)
- 		exit(1);
- 	else{
-		  //while en base a la cantidad de filas del libro 
- 	      while (cont < cantidad){
-			cont++;
-			
-			//Toma la fila del libro
-			fgets(fila,500,archivo);
-			
-			tamPalbra = strlen(palabra);
-			tamFila = strlen(fila);
-			
-			for (int i=0; i< tamFila ; i++){
-
-					
-					auxtam = i+tamPalbra;
-					//for para concatenar la palabra  
-					  for ( j= i, xi=0; j<= auxtam  ; j++,xi++){
-						  
-						aux[xi]=tolower(fila[j]);
-						
-					  }  
-					  aux[tamPalbra]='\0';
-										
-
-				   if ( strcmp(aux,palabra) ==0){
-					 printf("%d Se sustituyo : %s\n",row, palabra);  
-					 fprintf(archivo,definicion);
-					 
-					 seguir=1;
-				  }		
-					// Esta pregunta es para que salga del ciclo for por que ya sustituyo la palabra 
-					if (seguir)	break;
-				
-			}
-			//Para romper el while y no se  quede preguntando 
-			if (seguir)	break;	
- 	    }
-
-		fclose(archivo);
-		
-    }
-    
-}
-
-void sustituir(int nodo){
-	FILE *archivo;
-	char *caracter[20]={0};
-	char definicion[500]={0};
-	int cont=0;
-	
-	char numNodo[2] = {0};
-	char nombreArchNodo[60];
-	sprintf(numNodo,"%d",nodo); //trasnforma int  a char 
-	strcpy(nombreArchNodo,_archivoXproc);
-	strcat(nombreArchNodo,numNodo);
-	strcat(nombreArchNodo,".txt"); //genera el nombre del archivo 
-
-	
-	int cantidad = cantFilas(nombreArchNodo)-1;
-	
-	//Diireccion del diccionario particular
-	archivo = fopen(nombreArchNodo,"r");
-	
-	if (archivo == NULL)
-        {
-            printf("\nError de apertura del archivo. \n\n");
-        }
-        else
-        {
-            //while en base a la cantidad de filas del diccionario particular
-            while(cont < cantidad){	
-			    cont++;
-				//Obtiene palabra
-			    fscanf(archivo,"%s",&caracter);
-				// Obtiene definicion 
-				fgets(definicion,500,archivo);
-				//Se manda definicion y palabra bala buscar y sustituir
-				buscarPalabraLibro(strlwr(caracter),definicion,cont);
-
-	
-	    	}
-        }   
-	fclose(archivo);	
-}
-//-----------------------------------------------------------------------------------------------
-
 
 
 
