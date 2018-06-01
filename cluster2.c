@@ -55,7 +55,6 @@ void cuentaPalabras(char palabra[60], int nodo);
 void obtinePalabraDiccionario(int nodo);//metodo principal
 //------------------------------------------------------------
 
-void archivoTotalCuentas();
 
 
 		/*************************************************************
@@ -364,28 +363,3 @@ void obtinePalabraDiccionario(int nodo){
 //--------------------------------------------------------------------------------------	
 
 
-//------------------------------genera archivo total de cuentas solo para proceso 1--------------------
-
-void archivoTotalCuentas(){
-	FILE *archivo, *final;
-	char texto[200];
-	
-	char numNodo[2] = {0};
-	char nombreArch[60];
-	sprintf(numNodo,"%d",1); //trasnforma int  a char 
-	strcpy(nombreArch,_countWord);
-	strcat(nombreArch,numNodo);
-	strcat(nombreArch,".txt"); //genera el nombre del archivo
-	
-	archivo = fopen(nombreArch,"r");
-	final = fopen(_total,"a");
-	
-	while (fgets(texto,200,archivo) != NULL){
-		fputs(texto,final);
-	}
-	
-	fclose(archivo);
-	fclose(final);
-}
-
-//-----------------------------------------------------------------------------------------------------	

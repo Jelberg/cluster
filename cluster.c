@@ -247,6 +247,7 @@ void archivoPalabrasXnodo(int cantNodos){
 	char definicion[500]={0};
 	
 	int totalPalabras = cantFilas(_diccionario);
+	printf("%s\n",_diccionario);
 	// Divide la cantidad de palabras totales en basse a la cantidad de nodos existentes
 	int cantidadParticular = totalPalabras/cantNodos + 1;
 	printf("CANTIDAD DE PALABRAS POR CADA NODO: %d\n",cantidadParticular);

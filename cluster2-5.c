@@ -49,6 +49,8 @@ void receptorArchivo(int nodo, char dir[]);//nodo = de quien recibe los datos ; 
 void receptorArchivoCoordinador(char dir[]);// dir = donde se va a guardar el archivo
 //-----------------------------------------------
 
+void archivoTotalCuentas();
+
 		/*************************************************************
 
 							        MAIN
@@ -68,6 +70,10 @@ void main(int argc, char** argv){
 
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_id);
 	MPI_Comm_size(MPI_COMM_WORLD, &nproc);
+	
+	if (my_id==1) archivoTotalCuentas();
+	
+	MPI_Barrier(MPI_COMM_WORLD);// Espera hasta que nodo 1 genere el archivo de palabras 
 	
 	if (my_id == 0) {
 		//archivoTotalCuentas();
@@ -170,4 +176,26 @@ void receptorArchivo(int nodo, char dir[]){
 
 //------------------------------------------------------------------------------
 
+
+void archivoTotalCuentas(){
+	FILE *archivo, *final;
+	char texto[200];
+	
+	char numNodo[2] = {0};
+	char nombreArch[60];
+	sprintf(numNodo,"%d",1); //trasnforma int  a char 
+	strcpy(nombreArch,_countWord);
+	strcat(nombreArch,numNodo);
+	strcat(nombreArch,".txt"); //genera el nombre del archivo
+	
+	archivo = fopen(nombreArch,"r");
+	final = fopen(_total,"a");
+	
+	while (fgets(texto,200,archivo) != NULL){
+		fputs(texto,final);
+	}
+	
+	fclose(archivo);
+	fclose(final);
+}
 
